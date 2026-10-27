@@ -1,0 +1,11 @@
+# Exclude unrelated workspace files
+SENTINEL*
+Sentinal/
+sentinel*
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log

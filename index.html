@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For Akanksha — With All My Heart</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          scale: {
+            '102': '1.02',
+            '108': '1.08',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- React & ReactDOM CDN -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  
+  <!-- Babel Standalone for in-browser JSX parsing -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- GSAP CDN + MotionPathPlugin CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/MotionPathPlugin.min.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #07020d;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+  </style>
+</head>
+<body class="bg-[#07020d] text-rose-100">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef, useCallback } = React;
+
+    function ApologyWebsite() {
+      const [isPlaying, setIsPlaying] = useState(false);
+      const [modalOpen, setModalOpen] = useState(false);
+      const [gsapLoaded, setGsapLoaded] = useState(true);
+      const [activeView, setActiveView] = useState("landing"); // 'landing' or 'letter'
+      const [activeWaypoint, setActiveWaypoint] = useState(0);
+
+      const containerRef = useRef(null);
+      const audioRef = useRef(null);
+      const heartRef = useRef(null);
+      const landingHeartRef = useRef(null);
+      const heroTitleRef = useRef(null);
+      const landingCardRef = useRef(null);
+      const quotesRef = useRef([]);
+      const photosRef = useRef([]);
+      const petalsContainerRef = useRef(null);
+      const trailContainerRef = useRef(null);
+      const motionPathDotRef = useRef(null);
+      const motionTweenRef = useRef(null);
+      const gsapCtxRef = useRef(null);
+
+      const musicUrl =
+        "./WhatsApp%20Audio%202026-10-28%20at%201.31.38%20AM.mp4";
+
+      // Exact 4 Hindi Quotes required, accompanied by English reflections
+      const quotes = [
+        {
+          hindi: "Kabhi chhodne ki nhi soch sakta main aapko",
+          english:
+            "I could never, even in my wildest thoughts, imagine letting you go. You are an inseparable part of my soul.",
+          icon: "🌹",
+          tag: "Eternal Devotion",
+        },
+        {
+          hindi: "Please waapas aa jaiye",
+          english:
+            "Every quiet moment reminds me of your absence. My world and my heart are hollow without you.",
+          icon: "✨",
+          tag: "Humble Plea",
+        },
+        {
+          hindi:
+            "Aap humesha kehti thi ki aapke liye kuch kyu nhi bnata — aaj banaya toh aap saath mein nhi hain",
+          english:
+            "You always asked why I never built or wrote something just for you. Today, when I finally poured every emotion into this, you aren't here beside me.",
+          icon: "💌",
+          tag: "From the Heart",
+        },
+        {
+          hindi: "Please Akanksha, Krish ko aise akela mat chhodke jaiye",
+          english:
+            "Without your warmth, forgiveness, and smile, I am completely stranded. Please don't leave me alone.",
+          icon: "🫂",
+          tag: "Unconditional Love",
+        },
+      ];
+
+      const photos = [
+        {
+          url: "https://raw.githubusercontent.com/Someone1701/Project1/main/WhatsApp%20Image%202026-02-06%20at%2021.23.43.jpeg",
+          title: "Radiant Grace",
+          caption: "Your smile has the power to banish any darkness in my world.",
+        },
+        {
+          url: "https://raw.githubusercontent.com/Someone1701/Project1/main/WhatsApp%20Image%202026-02-02%20at%2001.46.53.jpeg",
+          title: "Cherished Times",
+          caption: "Moments etched in time that play like sweet symphonies in my mind.",
+        },
+        {
+          url: "https://raw.githubusercontent.com/Someone1701/Project1/main/WhatsApp%20Image%202026-02-02%20at%2001.46.54.jpeg",
+          title: "Quiet Companionship",
+          caption: "Walking beside you will always be the greatest fortune of my life.",
+        },
+        {
+          url: "https://raw.githubusercontent.com/Someone1701/Project1/main/WhatsApp%20Image%202026-02-02%20at%2001.46.55.jpeg",
+          title: "Shared Smiles",
+          caption: "Every photograph holds the scent of innocent laughter and genuine joy.",
+        },
+        {
+          url: "https://raw.githubusercontent.com/Someone1701/Project1/main/WhatsApp%20Image%202026-02-06%20at%2021.23.43c.jpeg",
+          title: "Forever Yours",
+          caption: "In every lifetime, every universe, my heart will always choose you.",
+        },
+      ];
+
+      const waypoints = [
+        {
+          step: "01",
+          label: "The Beginning",
+          desc: "When my heart first recognized its home in you.",
+          icon: "✨",
+          progress: 0.05,
+        },
+        {
+          step: "02",
+          label: "Shared Smiles",
+          desc: "Unforgettable memories of warmth, laughter and joy.",
+          icon: "🌸",
+          progress: 0.35,
+        },
+        {
+          step: "03",
+          label: "Deep Remorse",
+          desc: "Regret for mistakes made, and a promise to be better.",
+          icon: "🕊️",
+          progress: 0.68,
+        },
+        {
+          step: "04",
+          label: "Forever Yours",
+          desc: "An everlasting love that will always wait for you.",
+          icon: "💖",
+          progress: 0.98,
+        },
+      ];
+
+      // Register MotionPathPlugin
+      useEffect(() => {
+        if (window.gsap && window.MotionPathPlugin) {
+          window.gsap.registerPlugin(window.MotionPathPlugin);
+        }
+      }, []);
+
+      // ================= 1. ULTRA-PERFORMANT CURSOR TRAIL (gsap.quickTo) =================
+      useEffect(() => {
+        if (!window.gsap || !trailContainerRef.current) return;
+        const gsap = window.gsap;
+
+        const trailCount = 8;
+        const trailElements = [];
+        trailContainerRef.current.innerHTML = "";
+
+        for (let i = 0; i < trailCount; i++) {
+          const dot = document.createElement("div");
+          dot.className =
+            "fixed pointer-events-none rounded-full z-40 will-change-transform mix-blend-screen";
+          const size = Math.max(5, 14 - i * 1.2);
+          dot.style.width = `${size}px`;
+          dot.style.height = `${size}px`;
+          dot.style.background =
+            i % 2 === 0
+              ? "radial-gradient(circle, rgba(251,113,133,0.85) 0%, rgba(244,63,94,0.2) 65%, transparent 100%)"
+              : "radial-gradient(circle, rgba(244,114,182,0.75) 0%, rgba(192,132,252,0.15) 65%, transparent 100%)";
+          dot.style.transform = "translate(-50%, -50%) translateZ(0)";
+          dot.style.left = "0px";
+          dot.style.top = "0px";
+          trailContainerRef.current.appendChild(dot);
+          trailElements.push(dot);
+        }
+
+        // Use gsap.quickTo for instant GPU-accelerated updates without recreating tweens
+        const quickSetters = trailElements.map((el, index) => ({
+          x: gsap.quickTo(el, "x", { duration: 0.12 + index * 0.025, ease: "power2.out" }),
+          y: gsap.quickTo(el, "y", { duration: 0.12 + index * 0.025, ease: "power2.out" }),
+        }));
+
+        let rafId = null;
+        const handleMouseMove = (e) => {
+          if (rafId) cancelAnimationFrame(rafId);
+          rafId = requestAnimationFrame(() => {
+            const cx = e.clientX;
+            const cy = e.clientY;
+            quickSetters.forEach((setter) => {
+              setter.x(cx);
+              setter.y(cy);
+            });
+          });
+        };
+
+        window.addEventListener("mousemove", handleMouseMove, { passive: true });
+
+        return () => {
+          window.removeEventListener("mousemove", handleMouseMove);
+          if (rafId) cancelAnimationFrame(rafId);
+        };
+      }, []);
+
+      // ================= 2. SMOOTH 3D PERSPECTIVE TILT (Ref: cursor-driven-perspective-tilt) =================
+      const handlePerspectiveTilt = useCallback((e, cardElement, maxRotation = 12) => {
+        if (!cardElement || !window.gsap) return;
+        const gsap = window.gsap;
+        const rect = cardElement.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const xPercent = (x / rect.width - 0.5) * 2;
+        const yPercent = (y / rect.height - 0.5) * 2;
+
+        gsap.to(cardElement, {
+          rotateX: -yPercent * maxRotation,
+          rotateY: xPercent * maxRotation,
+          transformPerspective: 1000,
+          transformOrigin: "center center",
+          scale: 1.015,
+          duration: 0.25,
+          ease: "power1.out",
+          overwrite: "auto",
+        });
+
+        const gloss = cardElement.querySelector(".card-gloss");
+        if (gloss) {
+          gsap.to(gloss, {
+            opacity: 0.35,
+            x: (xPercent * 40).toFixed(1) + "%",
+            y: (yPercent * 40).toFixed(1) + "%",
+            duration: 0.2,
+            overwrite: "auto",
+          });
+        }
+      }, []);
+
+      const handleTiltReset = useCallback((cardElement) => {
+        if (!cardElement || !window.gsap) return;
+        const gsap = window.gsap;
+        gsap.to(cardElement, {
+          rotateX: 0,
+          rotateY: 0,
+          scale: 1,
+          duration: 0.5,
+          ease: "power2.out",
+          overwrite: "auto",
+        });
+        const gloss = cardElement.querySelector(".card-gloss");
+        if (gloss) {
+          gsap.to(gloss, { opacity: 0, duration: 0.4, overwrite: "auto" });
+        }
+      }, []);
+
+      // ================= 3. GSAP CONTEXT & REVERT =================
+      useEffect(() => {
+        if (!window.gsap) return;
+        const gsap = window.gsap;
+
+        if (gsapCtxRef.current) {
+          gsapCtxRef.current.revert();
+        }
+
+        gsapCtxRef.current = gsap.context(() => {
+          // Heart pulse
+          if (landingHeartRef.current) {
+            gsap.to(landingHeartRef.current, {
+              scale: 1.22,
+              duration: 0.9,
+              repeat: -1,
+              yoyo: true,
+              ease: "sine.inOut",
+            });
+          }
+          if (heartRef.current) {
+            gsap.to(heartRef.current, {
+              scale: 1.25,
+              duration: 0.9,
+              repeat: -1,
+              yoyo: true,
+              ease: "sine.inOut",
+            });
+          }
+
+          // Optimized Falling Petals (18 petals with GPU transforms)
+          if (petalsContainerRef.current) {
+            petalsContainerRef.current.innerHTML = "";
+            const totalPetals = 18;
+            const petalIcons = ["🌸", "🌹", "✨", "🌺", "💖"];
+
+            for (let i = 0; i < totalPetals; i++) {
+              const petal = document.createElement("div");
+              petal.innerText = petalIcons[i % petalIcons.length];
+              petal.className =
+                "absolute select-none pointer-events-none text-rose-300 opacity-60 will-change-transform";
+              petal.style.fontSize = `${14 + Math.random() * 14}px`;
+              petal.style.left = `${(i * (100 / totalPetals)) + Math.random() * 4}%`;
+              petal.style.top = `${-40 - Math.random() * 60}px`;
+              petal.style.transform = "translateZ(0)";
+              petalsContainerRef.current.appendChild(petal);
+
+              gsap.to(petal, {
+                y: "110vh",
+                x: `+=${Math.random() * 80 - 40}`,
+                rotation: Math.random() * 360,
+                duration: 7 + Math.random() * 6,
+                repeat: -1,
+                delay: Math.random() * 5,
+                ease: "none",
+              });
+            }
+          }
+
+          // Staggered Entrance for Quotes
+          if (activeView === "letter") {
+            const validQuotes = quotesRef.current.filter(Boolean);
+            if (validQuotes.length > 0) {
+              gsap.fromTo(
+                validQuotes,
+                { opacity: 0, y: 35, scale: 0.96 },
+                {
+                  opacity: 1,
+                  y: 0,
+                  scale: 1,
+                  duration: 0.8,
+                  stagger: 0.18,
+                  ease: "power2.out",
+                  delay: 0.2,
+                }
+              );
+            }
+
+            // Staggered Entrance for Photos
+            const validPhotos = photosRef.current.filter(Boolean);
+            if (validPhotos.length > 0) {
+              gsap.fromTo(
+                validPhotos,
+                { opacity: 0, scale: 0.92 },
+                {
+                  opacity: 1,
+                  scale: 1,
+                  duration: 0.75,
+                  stagger: 0.14,
+                  ease: "back.out(1.1)",
+                  delay: 0.6,
+                }
+              );
+            }
+          }
+
+          // MOTIONPATH WAYPOINTS (Ref: motionpath-waypoints)
+          if (
+            activeView === "landing" &&
+            window.MotionPathPlugin &&
+            motionPathDotRef.current
+          ) {
+            motionTweenRef.current = gsap.to(motionPathDotRef.current, {
+              motionPath: {
+                path: "#loveMotionPath",
+                align: "#loveMotionPath",
+                alignOrigin: [0.5, 0.5],
+                autoRotate: true,
+              },
+              duration: 12,
+              repeat: -1,
+              ease: "none",
+            });
+          }
+
+          // Parallax Scroll Effect
+          const handleScroll = () => {
+            const scrollY = window.scrollY;
+            if (heroTitleRef.current && activeView === "letter") {
+              gsap.to(heroTitleRef.current, {
+                y: scrollY * 0.28,
+                opacity: Math.max(0, 1 - scrollY / 600),
+                overwrite: "auto",
+                duration: 0.2,
+              });
+            }
+          };
+          window.addEventListener("scroll", handleScroll, { passive: true });
+
+          return () => {
+            window.removeEventListener("scroll", handleScroll);
+          };
+        }, containerRef);
+
+        return () => {
+          if (gsapCtxRef.current) {
+            gsapCtxRef.current.revert();
+          }
+        };
+      }, [activeView]);
+
+      const toggleMusic = () => {
+        if (!audioRef.current) return;
+        if (isPlaying) {
+          audioRef.current.pause();
+          setIsPlaying(false);
+        } else {
+          audioRef.current
+            .play()
+            .then(() => setIsPlaying(true))
+            .catch(() => setIsPlaying(false));
+        }
+      };
+
+      const handleOpenLetter = () => {
+        setActiveView("letter");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        if (!isPlaying && audioRef.current) {
+          audioRef.current
+            .play()
+            .then(() => setIsPlaying(true))
+            .catch(() => {});
+        }
+      };
+
+      const jumpToWaypoint = (index) => {
+        setActiveWaypoint(index);
+        if (!window.gsap || !motionPathDotRef.current || !window.MotionPathPlugin) return;
+        if (motionTweenRef.current) {
+          motionTweenRef.current.pause();
+        }
+        window.gsap.to(motionPathDotRef.current, {
+          motionPath: {
+            path: "#loveMotionPath",
+            align: "#loveMotionPath",
+            alignOrigin: [0.5, 0.5],
+            start: waypoints[index].progress,
+            end: waypoints[index].progress,
+            autoRotate: true,
+          },
+          duration: 1.2,
+          ease: "power2.inOut",
+          onComplete: () => {
+            setTimeout(() => {
+              if (motionTweenRef.current) motionTweenRef.current.play();
+            }, 3000);
+          },
+        });
+      };
+
+      return (
+        <div
+          ref={containerRef}
+          className="relative min-h-screen bg-[#07020d] text-rose-100 font-sans selection:bg-rose-500 selection:text-white overflow-x-hidden"
+        >
+          {/* Background Ambience & Gradient Orbs */}
+          <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+            <div className="absolute -top-32 -left-32 w-96 h-96 bg-purple-900/30 rounded-full blur-[120px]" />
+            <div className="absolute top-1/3 -right-32 w-[28rem] h-[28rem] bg-rose-900/25 rounded-full blur-[140px]" />
+            <div className="absolute -bottom-32 left-1/4 w-[32rem] h-[32rem] bg-fuchsia-950/30 rounded-full blur-[150px]" />
+          </div>
+
+          {/* Floating Falling Petals Layer */}
+          <div
+            ref={petalsContainerRef}
+            className="fixed inset-0 pointer-events-none z-10 overflow-hidden"
+          />
+
+          {/* Optimized GSAP Cursor Trail Container (Ref: cursor-trail) */}
+          <div ref={trailContainerRef} className="fixed inset-0 pointer-events-none z-40" />
+
+          {/* Audio Element with Local MP4 Song */}
+          <audio ref={audioRef} src={musicUrl} loop preload="auto">
+            <source src={musicUrl} type="audio/mp4" />
+            <source src="./WhatsApp%20Audio%202026-10-28%20at%201.31.38%20AM.mp4" type="video/mp4" />
+          </audio>
+
+          {/* Top Floating Navigation Bar */}
+          <header className="fixed top-5 inset-x-0 z-50 px-4 sm:px-8 max-w-6xl mx-auto flex items-center justify-between pointer-events-none">
+            <div className="pointer-events-auto">
+              {activeView === "letter" ? (
+                <button
+                  onClick={() => setActiveView("landing")}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#160829]/80 backdrop-blur-md border border-rose-500/30 text-rose-300 hover:text-white hover:border-rose-400 text-xs sm:text-sm font-medium transition-all shadow-md active:scale-95"
+                >
+                  <span>←</span>
+                  <span>Back to Landing Page</span>
+                </button>
+              ) : (
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-950/60 backdrop-blur-md border border-rose-500/30 text-rose-300 text-xs font-semibold tracking-wider uppercase">
+                  <span>🌹</span> For Akanksha
+                </div>
+              )}
+            </div>
+
+            <button
+              onClick={toggleMusic}
+              className="pointer-events-auto flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#170826]/80 backdrop-blur-md border border-rose-500/40 text-rose-200 hover:text-white hover:border-rose-400 shadow-[0_0_20px_rgba(244,63,94,0.35)] transition-all duration-300 hover:scale-105 active:scale-95 group text-xs sm:text-sm"
+              aria-label="Toggle Music"
+            >
+              <span className="relative flex h-2.5 w-2.5">
+                {isPlaying && (
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75" />
+                )}
+                <span
+                  className={`relative inline-flex rounded-full h-2.5 w-2.5 ${
+                    isPlaying ? "bg-rose-500" : "bg-zinc-500"
+                  }`}
+                />
+              </span>
+              <span className="font-medium">
+                {isPlaying ? "Playing Our Song 🎵" : "Play Our Song 🎶"}
+              </span>
+              <span className="group-hover:rotate-12 transition-transform">
+                {isPlaying ? "⏸️" : "▶️"}
+              </span>
+            </button>
+          </header>
+
+          {/* ================= LANDING PAGE VIEW ================= */}
+          {activeView === "landing" && (
+            <main className="relative z-20 min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 text-center max-w-5xl mx-auto py-24 animate-in fade-in duration-500">
+              {/* Hero 3D Perspective Card (Ref: cursor-driven-perspective-tilt) */}
+              <div
+                ref={landingCardRef}
+                onMouseMove={(e) => handlePerspectiveTilt(e, landingCardRef.current, 10)}
+                onMouseLeave={() => handleTiltReset(landingCardRef.current)}
+                style={{ transformStyle: "preserve-3d" }}
+                className="relative w-full max-w-3xl p-8 sm:p-12 rounded-3xl bg-gradient-to-b from-[#19092f]/90 via-[#130624]/90 to-[#0a0314]/95 border border-rose-500/30 shadow-[0_20px_50px_rgba(0,0,0,0.7),0_0_40px_rgba(244,63,94,0.25)] backdrop-blur-xl transition-shadow duration-300 cursor-default overflow-hidden group"
+              >
+                <div className="card-gloss absolute -inset-full bg-gradient-to-r from-transparent via-rose-300/10 to-transparent pointer-events-none opacity-0 transition-opacity" />
+
+                <div
+                  ref={landingHeartRef}
+                  className="text-6xl sm:text-7xl mb-5 select-none filter drop-shadow-[0_0_35px_rgba(244,63,94,0.7)]"
+                >
+                  ❤️
+                </div>
+
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-950/70 border border-rose-500/30 text-rose-300 text-xs sm:text-sm font-semibold tracking-widest uppercase mb-5 shadow-[0_0_15px_rgba(244,63,94,0.2)]">
+                  <span>✨</span> A Personal Sanctuary • Just For You
+                </div>
+
+                <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-rose-100 via-rose-300 to-fuchsia-300 drop-shadow-md mb-5 leading-tight">
+                  To the One Who Holds My Entire Heart
+                </h1>
+
+                <p className="text-sm sm:text-base text-rose-200/85 font-light leading-relaxed max-w-2xl mx-auto mb-8 px-2">
+                  Dear Akanksha, without you, every moment feels incomplete. I built this
+                  interactive sanctuary to share the memories, remorse, and eternal
+                  promises that live deep within my soul. Move your cursor to explore,
+                  or open the letter below.
+                </p>
+
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                  <button
+                    onClick={handleOpenLetter}
+                    className="px-10 py-4 rounded-full font-bold text-base sm:text-lg text-white bg-gradient-to-r from-rose-600 via-rose-500 to-pink-600 shadow-[0_0_35px_rgba(244,63,94,0.65)] hover:shadow-[0_0_60px_rgba(244,63,94,0.95)] hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer border border-rose-300/40 flex items-center gap-3 group/btn"
+                  >
+                    <span>Read My Letter & Memories</span>
+                    <span className="text-xl group-hover/btn:translate-x-1.5 transition-transform">
+                      💌
+                    </span>
+                  </button>
+                </div>
+              </div>
+
+              {/* ================= RESTRUCTURED MOTIONPATH WAYPOINTS (Zero Overlap) ================= */}
+              <section className="w-full max-w-4xl mt-14 p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-[#16062a]/70 to-[#0e031c]/80 border border-rose-500/25 backdrop-blur-md shadow-2xl">
+                <div className="text-center mb-6">
+                  <span className="text-rose-400 text-xs font-semibold tracking-widest uppercase">
+                    Interactive Journey
+                  </span>
+                  <h2 className="text-xl sm:text-2xl font-bold text-rose-100 mt-1">
+                    The Path of Our Memories & My Promise
+                  </h2>
+                  <p className="text-xs text-rose-300/60 mt-1">
+                    Click any milestone below to guide the heart to that memory
+                  </p>
+                </div>
+
+                {/* Clean SVG Track Banner (No text collision) */}
+                <div className="relative w-full h-20 sm:h-24 px-4 flex items-center justify-center overflow-visible">
+                  <svg viewBox="0 0 800 80" className="w-full h-full overflow-visible">
+                    <defs>
+                      <linearGradient id="cleanTrackGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#f43f5e" stopOpacity="0.4" />
+                        <stop offset="50%" stopColor="#fb7185" stopOpacity="0.9" />
+                        <stop offset="100%" stopColor="#e879f9" stopOpacity="0.4" />
+                      </linearGradient>
+                    </defs>
+
+                    <path
+                      id="loveMotionPath"
+                      d="M 30,40 C 180,-10 240,90 400,40 C 560,-10 620,90 770,40"
+                      fill="none"
+                      stroke="url(#cleanTrackGrad)"
+                      strokeWidth="3"
+                      strokeDasharray="6 6"
+                    />
+
+                    <g ref={motionPathDotRef} className="cursor-pointer select-none">
+                      <circle r="14" fill="#f43f5e" filter="drop-shadow(0px 0px 8px #f43f5e)" />
+                      <text
+                        textAnchor="middle"
+                        dy="4"
+                        fontSize="11"
+                        fill="white"
+                        fontWeight="bold"
+                      >
+                        💖
+                      </text>
+                    </g>
+                  </svg>
+                </div>
+
+                {/* Dedicated Non-Overlapping Waypoint Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-4">
+                  {waypoints.map((wp, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => jumpToWaypoint(idx)}
+                      className={`p-4 rounded-2xl text-left transition-all duration-300 border flex flex-col justify-between ${
+                        activeWaypoint === idx
+                          ? "bg-rose-950/60 border-rose-400 shadow-[0_0_20px_rgba(244,63,94,0.4)] scale-102"
+                          : "bg-[#110420]/80 border-rose-500/20 hover:border-rose-400/50 hover:bg-[#18072d]/80"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xl">{wp.icon}</span>
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-300 border border-rose-500/20">
+                          Phase {wp.step}
+                        </span>
+                      </div>
+                      <h4 className="font-semibold text-rose-100 text-sm mb-1">
+                        {wp.label}
+                      </h4>
+                      <p className="text-xs text-rose-300/70 leading-relaxed font-light">
+                        {wp.desc}
+                      </p>
+                    </button>
+                  ))}
+                </div>
+              </section>
+
+              {/* 3D Interactive Feature Teaser Cards (Ref: cursor-driven-perspective-tilt) */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mt-10 w-full max-w-4xl">
+                {[
+                  {
+                    icon: "🕊️",
+                    title: "A Sincere Apology",
+                    desc: "Every word written from deep inside, asking for your gentle grace and forgiveness.",
+                  },
+                  {
+                    icon: "📸",
+                    title: "Timeless Moments",
+                    desc: "Photos that capture our genuine laughter, quiet bond, and cherished memories.",
+                  },
+                  {
+                    icon: "🎵",
+                    title: "Our Song",
+                    desc: "A soulful melody that echoes my longing and waits only for you to come home.",
+                  },
+                ].map((feature, i) => (
+                  <div
+                    key={i}
+                    onMouseMove={(e) => handlePerspectiveTilt(e, e.currentTarget, 10)}
+                    onMouseLeave={(e) => handleTiltReset(e.currentTarget)}
+                    style={{ transformStyle: "preserve-3d" }}
+                    className="relative p-6 rounded-2xl bg-gradient-to-b from-[#150727]/80 to-[#0e041d]/90 border border-rose-500/20 hover:border-rose-400/50 shadow-[0_10px_25px_rgba(0,0,0,0.5)] backdrop-blur-md text-left transition-shadow duration-300 overflow-hidden cursor-default group"
+                  >
+                    <div className="card-gloss absolute -inset-full bg-gradient-to-r from-transparent via-rose-400/10 to-transparent pointer-events-none opacity-0" />
+                    <span className="text-3xl mb-3 block group-hover:scale-110 transition-transform">
+                      {feature.icon}
+                    </span>
+                    <h3 className="font-semibold text-rose-100 text-base mb-1">
+                      {feature.title}
+                    </h3>
+                    <p className="text-xs text-rose-300/70 leading-relaxed font-light">
+                      {feature.desc}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </main>
+          )}
+
+          {/* ================= FULL LETTER & MEMORIES VIEW ================= */}
+          {activeView === "letter" && (
+            <main className="relative z-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-28 flex flex-col items-center animate-in fade-in duration-500">
+              {/* Hero Section */}
+              <section className="text-center w-full max-w-3xl pt-6 pb-12 flex flex-col items-center">
+                <div
+                  ref={heartRef}
+                  className="text-6xl sm:text-7xl mb-6 select-none cursor-default filter drop-shadow-[0_0_25px_rgba(244,63,94,0.65)]"
+                >
+                  ❤️
+                </div>
+
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-950/60 border border-rose-500/30 text-rose-300 text-xs sm:text-sm font-medium tracking-widest uppercase mb-5">
+                  <span>🌹</span> From Krish's Heart • For Akanksha
+                </div>
+
+                <h1
+                  ref={heroTitleRef}
+                  className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-rose-200 via-rose-300 to-fuchsia-300 drop-shadow-sm mb-6 leading-tight"
+                >
+                  My Dearest Akanksha
+                </h1>
+
+                <p className="text-base sm:text-xl text-rose-200/80 font-light leading-relaxed max-w-2xl px-2">
+                  Life without you feels colorless and silent. From the deepest corners
+                  of my soul, I offer you my most sincere apology. My days and nights
+                  only hold meaning when they carry your thoughts.
+                </p>
+              </section>
+
+              {/* Hindi Quote Cards with 3D Perspective Tilt (Ref: cursor-driven-perspective-tilt) */}
+              <section className="w-full my-8">
+                <div className="text-center mb-10">
+                  <span className="text-rose-400 text-xs sm:text-sm font-semibold tracking-widest uppercase">
+                    Feelings I Carry Every Day
+                  </span>
+                  <h2 className="text-2xl sm:text-3xl font-bold text-rose-100 mt-1 mb-2">
+                    Words Straight From My Soul
+                  </h2>
+                  <div className="h-0.5 w-24 bg-gradient-to-r from-transparent via-rose-500 to-transparent mx-auto" />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+                  {quotes.map((quote, index) => (
+                    <div
+                      key={index}
+                      ref={(el) => (quotesRef.current[index] = el)}
+                      onMouseMove={(e) => handlePerspectiveTilt(e, e.currentTarget, 10)}
+                      onMouseLeave={(e) => handleTiltReset(e.currentTarget)}
+                      style={{ transformStyle: "preserve-3d" }}
+                      className="relative group p-7 sm:p-8 rounded-2xl bg-gradient-to-b from-[#160829]/90 to-[#0e041d]/90 border border-rose-500/20 hover:border-rose-400/60 transition-shadow duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:shadow-[0_0_35px_rgba(244,63,94,0.3)] backdrop-blur-md overflow-hidden cursor-default"
+                    >
+                      <div className="card-gloss absolute -inset-full bg-gradient-to-r from-transparent via-rose-400/10 to-transparent pointer-events-none opacity-0" />
+
+                      <div className="absolute top-4 right-5 text-2xl opacity-70 group-hover:scale-125 transition-transform duration-300">
+                        {quote.icon}
+                      </div>
+
+                      <div className="text-rose-500/40 text-4xl font-serif leading-none select-none mb-1">
+                        &ldquo;
+                      </div>
+
+                      {/* Hindi Quote (Exact Lines) */}
+                      <h3 className="text-xl sm:text-2xl font-semibold text-rose-100 group-hover:text-rose-300 transition-colors duration-300 leading-snug mb-3 pr-6">
+                        {quote.hindi}
+                      </h3>
+
+                      {/* English Reflection */}
+                      <p className="text-sm sm:text-base text-rose-200/70 leading-relaxed font-light">
+                        {quote.english}
+                      </p>
+
+                      <div className="mt-5 flex items-center gap-2">
+                        <span className="h-1 w-8 rounded-full bg-rose-500/50 group-hover:w-14 transition-all duration-300" />
+                        <span className="text-[11px] uppercase tracking-wider text-rose-400/80 font-medium">
+                          {quote.tag}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* Responsive Photo Grid with 3D Tilt */}
+              <section className="w-full my-12">
+                <div className="text-center mb-10">
+                  <span className="text-rose-400 text-xs sm:text-sm font-semibold tracking-widest uppercase">
+                    Treasured Moments
+                  </span>
+                  <h2 className="text-2xl sm:text-3xl font-bold text-rose-100 mt-1 mb-2">
+                    Our Beautiful Memories
+                  </h2>
+                  <p className="text-rose-300/70 text-sm sm:text-base max-w-xl mx-auto">
+                    These are not merely pictures; they are proof of the purest happiness I have ever known.
+                  </p>
+                  <div className="h-0.5 w-24 bg-gradient-to-r from-transparent via-rose-500 to-transparent mx-auto mt-3" />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {photos.map((item, index) => (
+                    <div
+                      key={index}
+                      ref={(el) => (photosRef.current[index] = el)}
+                      onMouseMove={(e) => handlePerspectiveTilt(e, e.currentTarget, 10)}
+                      onMouseLeave={(e) => handleTiltReset(e.currentTarget)}
+                      style={{ transformStyle: "preserve-3d" }}
+                      className={`group relative overflow-hidden rounded-2xl bg-[#140726] border border-rose-500/20 hover:border-rose-400/60 shadow-[0_12px_28px_rgba(0,0,0,0.6)] transition-all duration-500 hover:shadow-[0_0_30px_rgba(244,63,94,0.35)] ${
+                        index === 0 ? "sm:col-span-2 lg:col-span-2 aspect-[16/10]" : "aspect-[4/5]"
+                      }`}
+                    >
+                      <img
+                        src={item.url}
+                        alt={item.title}
+                        loading="lazy"
+                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#090214] via-[#090214]/30 to-transparent opacity-85 group-hover:opacity-95 transition-opacity duration-300" />
+                      <div className="absolute bottom-0 inset-x-0 p-5 transform transition-transform duration-300">
+                        <span className="inline-block px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 text-xs font-medium mb-1 border border-rose-500/30">
+                          {item.title}
+                        </span>
+                        <p className="text-sm sm:text-base text-rose-100 font-medium leading-relaxed drop-shadow-md">
+                          {item.caption}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* Sincere Letter Section in English */}
+              <section className="w-full max-w-2xl my-8 p-8 sm:p-10 rounded-3xl bg-gradient-to-b from-[#18092d]/80 to-[#100420]/90 border border-rose-500/30 shadow-[0_0_40px_rgba(244,63,94,0.15)] text-center relative overflow-hidden backdrop-blur-md">
+                <div className="absolute -top-12 -right-12 w-32 h-32 bg-rose-500/10 rounded-full blur-2xl pointer-events-none" />
+
+                <h3 className="text-xl sm:text-2xl font-bold text-rose-200 mb-4">
+                  A Humble Promise to You
+                </h3>
+                <p className="text-rose-200/80 leading-relaxed text-sm sm:text-base mb-4 font-light">
+                  Whatever mistakes I made, I am deeply and genuinely sorry. Your happiness, your dignity,
+                  and your peace of mind mean more to me than anything else in this universe. I promise
+                  to honor your feelings, protect your heart, and cherish every single moment with you.
+                </p>
+                <p className="text-rose-300 font-medium italic text-base">
+                  &ldquo;With you, my world is complete. Without you, nothing feels right.&rdquo;
+                </p>
+              </section>
+
+              {/* Closing & Call to Action Section */}
+              <section className="text-center w-full max-w-xl mt-10 flex flex-col items-center">
+                <p className="text-rose-300/80 text-sm tracking-widest uppercase font-semibold mb-2">
+                  Waiting for you with all my heart
+                </p>
+                <div className="text-2xl sm:text-3xl font-serif text-rose-200 mb-8 tracking-wide">
+                  — aapka Krish
+                </div>
+
+                {/* Glowing Rose Pink Button */}
+                <button
+                  onClick={() => setModalOpen(true)}
+                  className="relative group px-10 py-4 rounded-full font-bold text-lg text-white bg-gradient-to-r from-rose-600 via-rose-500 to-pink-600 shadow-[0_0_35px_rgba(244,63,94,0.65)] hover:shadow-[0_0_55px_rgba(244,63,94,0.95)] hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer border border-rose-300/40"
+                >
+                  <span className="flex items-center gap-3">
+                    <span className="text-xl group-hover:animate-bounce">💌</span>
+                    <span>Wapas Aa Jaiye</span>
+                    <span className="text-xl group-hover:animate-pulse">✨</span>
+                  </span>
+                </button>
+              </section>
+            </main>
+          )}
+
+          {/* Heartfelt Confirmation Modal */}
+          {modalOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-all">
+              <div className="relative w-full max-w-md p-8 sm:p-9 rounded-3xl bg-gradient-to-b from-[#1c0a36] to-[#0c0317] border border-rose-500/50 shadow-[0_0_60px_rgba(244,63,94,0.5)] text-center animate-in fade-in zoom-in-95 duration-300">
+                <div className="text-5xl mb-4 animate-bounce">💖</div>
+                <h4 className="text-2xl font-bold text-rose-100 mb-3">
+                  Thank You, Akanksha!
+                </h4>
+                <p className="text-rose-200/90 text-sm sm:text-base leading-relaxed mb-6 font-light">
+                  Every breath, every prayer, and every dream of mine waits only for you.
+                  Krish was yours, is yours, and will always be yours forever.
+                </p>
+                <button
+                  onClick={() => setModalOpen(false)}
+                  className="w-full py-3 rounded-full bg-rose-600 hover:bg-rose-500 text-white font-semibold transition-all shadow-[0_0_20px_rgba(244,63,94,0.5)] active:scale-95"
+                >
+                  With All My Love 🌹
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Subtle Footer */}
+          <footer className="relative z-20 text-center py-6 text-xs text-rose-400/40">
+            Created by Krish with utmost love, sincerity, and hope.
+          </footer>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<ApologyWebsite />);
+  </script>
+</body>
+</html>
