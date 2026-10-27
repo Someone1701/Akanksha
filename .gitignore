@@ -9,3 +9,8 @@ Thumbs.db
 .vscode/
 .idea/
 *.log
+
+# Temp extraction artifacts
+note_images/
+rendered_notes/
+extract_notes.py

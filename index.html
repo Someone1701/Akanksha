@@ -52,6 +52,7 @@
       const [isPlaying, setIsPlaying] = useState(false);
       const [modalOpen, setModalOpen] = useState(false);
       const [selectedNote, setSelectedNote] = useState(null);
+      const [previewImage, setPreviewImage] = useState(null);
       const [gsapLoaded, setGsapLoaded] = useState(true);
       const [activeView, setActiveView] = useState("landing");
       const [activeWaypoint, setActiveWaypoint] = useState(0);
@@ -106,126 +107,246 @@
         },
       ];
 
-      // The 6 personal diary notes, ordered chronologically by publication date
+      // The 6 personal diary notes, ordered chronologically by publication date, with full uncensored text and attached media
       const diaryNotes = [
         {
           id: 1,
           date: "18 September 2026",
-          tag: "18 9 26",
-          title: "Kya Chhupa Raha Hoon Mai?",
+          tag: "18 9 26 • Handwritten Note",
+          title: "Kya Chhupa Rha Hoon Mai?",
           excerpt:
-            "Kya chhupa rha hoon mai? tumse? Mujhe khud nhi pta... Rona bhi ata h toh kiske sine pe sir rkhke rou...",
-          content: `Kya chhupa rha hoon mai? tumse?
-Mujhe khud nhi pta. Chhupa bhi kyu rha hoon ye bhi nhi pta. Ik boht childish sound karti h ki kyu mai itne mein gussa hogya ki 2 photos nhi lagayi and all. I am not angry I am upset. Upset coz ab mai convo mein nhi ata jab bhi tum post karte ho, ab mai convo mein nhi ata jab tum busy rehte ho. Jo subah bola maine uske liye toh mai abhi bhi regret mein hoon that how can i say that to my girl, the girl whom i love the most, the girl who loves me the most.
+            "Kya chhupa rha hoon mai? tumse? Mujhe khud nhi pta... Rona bhi ata h toh kiske sine pe sir rkhke rou... Ab ye aapko padhne mile ya na mile, par mai chaahta hoon ki bas aap ye tab padhe jab ye saari chize thik ho chuki ho...",
+          images: [
+            {
+              url: "./notes_media/note_18sep_heart.png",
+              caption: "Hand-drawn heart note from the letter ending",
+            },
+          ],
+          content: `18 9 26
 
-Idk yaar kaise bolta chala gya, maybe frustration of not feeling the way u love me or it maybe my fault to not able to understand. Ab aisa lag rha h ki aap nakhre dikhate ho bas whi pyaar karna hota h, maybe mai apka pyaar dekh nhi paa rha par it hurts. Idk yaar, i wanted somebody so that i can hug her.
+Kya chhupa rha hoon mai? tumse?
+Mujhe khud nhi pta. Chhupa bhi kyu rha hoon ye bhi nhi pta. Ik boht childish sound karti h ki kyu mai itne mein gussa hogya ki 2 photos nhi lagayo and all. I am not angry I am upset. upset coz ab mai convo mein nhi ata jab bhi tum post karte ho, ab mai convo mein nhi ata jab tum busy rehte ho, jo subah bola maine uske liye toh mai abhi bhi regret mein hoon that how can i say that to my girl, the girl whom i love the most, the girl who loves me the most. idk yaar kaise bolta chala gya, maybe frustration of not feeling the way love me or it maybe my fault to not able to understand. Ab aisa lag rha h ki aap nakhre dikhate ho bas whi pyaar karna hota h, maybe mai apka pyaar dekh nhi paa rha par it hurts. idk yaar, i wanted somebody so that i can hug her.
 
-Rona bhi ata h toh kiske sine pe sir rkhke rou, tumhare paas aane laga tha par hum ache se baat hi nhi kar paate, har baar jhagda hojata h, uss jhagde ko sort karte h toh waapas jhagda hojata h. Par sometimes i feel hollow inside looking like ki meri saari mehnat aapko manane ki koi kaam mein hi nhi aari, kyunki nakhre ke baad agar aap smile bhi karo na toh bhi mai khush hojata hoon. Tarasta hoon smile ke liye par aap karte hi nhi. Kyu yaar, itna bhi bura nhi hoon, galti kari h maafi maangra hoon, humesha maangunga.
+Rona bhi ata h toh kiske sine pe sir rkhke rou, tumhare paas aane laga tha par hum ache se baat hi nhi kar paate, har baar jhagda hojata h, uss jhagde ko sort karte h toh waapas jhagda hojata h, mai nhi keh rha ki aapke nakhro ki wakah se hota h jhagda par sometimes i feel hollow inside looking like ki meri saari mehnat aapko manane ki koi kaam mein hi nhi aari, kyunki nakhre ke baad agar aap smile bhi karo na toh bhi mai khush hojata hoon. Tarasta hoon smile ke liye par aap karte hi nhi. kyu yaar, itna bhi bura nhi hoon, galti kari h maafi maangra hoon, humesha maangunga.
 
-Aur pls ye break up jaisi chize mat bola karo, mai kabhi soch bhi nhi skta ye sab bolne ki. Mujhe jaisi aap ho chalega, jitne nakhre karne h karlo, nhi bolunga bhondu ya moti, photo bhi delete kardunga, par pls mujhe mat delete karo life se.
+rhi baat posts ki toh mera haq nhi banta utna ki ye change karne ko bolu ya woh but pahle aap hi puchte the ek ek chiz aur ab woh aadat ban chuki thi. ye sab bhi thik h, woh 2 photos mere mental peace jaise the, it was looking looking proudly to my girl, uspe ek sweet sa gaana aapke post ko boht pyaara banata, aur koi dekhe ya na dekhe, mai apke post humesha dekhta rehta hoon. Its not about post yaar.
+
+Woh toh aap boht daaloge, its about ki i feel now ki ab jisne emotions nikaalne sikhaye, woh hi ab paas nhi h mere emotions smjhne ke liye. kaise royu jab koi mujhe hug karke console hi nhi Kar para. sirf aapko dosh nhi dera, majboori bji h LDR ki ik. But i am sorry.
+
+And i am rlly sorry about what i said yesterday. U can do whatever u want with me. But pls dont let me feel left out, and pls pls dont tell me that i dont love you ye kabhi mat bolna, itna kaafi rehta h ab aadmi ko rulane ke liye chaahe woh jitna bhi mature hojaye.
+
+Har time jo aapke baare mein sochta h aapse itna pyaar karta h unhe ye sunne mile toh aapko bhi pta h ki kaisa lagta h.
+
+Aur pls ye break up jaisi chize mat bola karo, mai kabhi soch bhi nhi skta ye sab bolne ki. mujhe jaisi aap ho chalega, jitne nakhre karne h karlo, nhi bolunga bhondu ya moti, nhi bolunga much weight ke baare mein, photo bhi delete kardunga, par pls mujhe mat delete karo life se.
 I am sorry.
-Ab ye aapko padhne mile ya na mile, par mai chahta hoon ki bas aap ye tab padhe jab ye saari chize thik ho chuki ho na ki aap ye padhke thik hone ki koshish karo. Dukhi bhi reh lunga, bas saath rho.
+
+Ab ye aapko padhne mile ya na mile, par mai chaahta hoon ki bas aap ye tab padhe jab ye saari chize thik ho chuki ho na ki aap ye padhke thik hone ki koshish karo, nhi banna dominant, nhi karni zidd. Dukhi bhi reh lunga, bas saath rho.
+
 I love you the most Akanksha ❤️`,
         },
         {
           id: 2,
           date: "30 September 2026",
           tag: "30 Sep • Birthday Eve",
-          title: "Kal Mera Birthday Hai...",
+          title: "I Don't Wanna Live (Kal Mera Birthday Hai)",
           excerpt:
-            "Date dekh rhe ho... 30 september, kal mera bday h. Kaunsa bday, khush hone waali chiz hoti h kya? Toot sa gya hoon mai...",
-          content: `Failed in jee, Failed in advance.
-Had a back injury, somehow survived.
-Insisted my parents to get admission in this hell. Papa still agreed, paid 30 lacs for me. Just for me. 30 lacs... Ek middleclass aadmi ke liye 30 lacs unke net worth ka 30% jab pay karke apne bete ko 4 saal ke liye aisi jagah padhane bheja.
-Koshish bhi ki maine, par ab nahi ho pa raha. Toot sa gya hoon mai.
+            "Failed in jee, Failed in advance... Insisted my parents to get admission in this hell. Papa still agreed, paid 30lacs for me... Date dekh rhe ho.... 30september, kal mera bday h. Kaunsa bday, khush hone waali chiz hoti h kya?...",
+          images: [],
+          content: `I dont wanna live
 
-Date dekh rhe ho... 30 september, kal mera bday h. Kaunsa bday, khush hone waali chiz hoti h kya? Mai bhi khush hona chahta hoon, par ho nahi pa raha. Pata nahi par aansu ruk hi nahi rahe hain.
+Failed in jee
+Failed in advance 
+Had a back injury, somehow survived
+Insisted my parents to get admission in this hell. Papa still agreed, paid 30lacs for me. Just for me.
+30lacs
+Ek middleclass aadmi ke liye 30lacs, unke net worth ka 30% jab pay karke apne bete ko 4saal ke liye ek aisi jagah padhane bheja.
+Koshish bhi ki maine,
+Par ab nhi ho para ab.
+Toot sa gya hoon mai.
+
+Date dekh rhe ho.... 30september, kal mera bday h. kaunsa bday, khush hone waali chiz hoti h kya?
+Mai bhi khush hona chaahta hoon. par ho nhi para.
+Pata nhi par aansu ruk hi nhi rhe h.
+Chhodo baadme bataunga.
+Par, pura btaunga, ladka hoon dheere dheere aadmi ban rha hoon. usme toh likh hi skta hoon.
+Zinda rehni ki koshish hori h. zinda toh reh hi lunga. akela ladka hoon,
+Ab papa ko dekhta hoona toh rona ajata h, kuch nhi kar para unke liye.
 Failed as a son too.
-Jisne apne emotions ko convey karna sikhaya, uspe hi apne emotions control nahi kar paya. Khushi aur khush hone ki wajah, dono ko kho diya maine. Ab bhagwan bhi ye na bolde ki "Kitna haste rahoge, kabhi khush bhi ho liya karo".
 
-Sach batau toh agar kuch aisa hota ki mere maa-baap ko har mahine paise milte rehte aur meri madamji, haan meri khush hone ki wajah, woh humesha ke liye muskurati rehti ya mujhe bhool jaati, toh abhi hi jaan de deta.
-Depressed nahi hoon yaar, mai majboor hoon. 100 chizo se bandha hua hoon. Nahi banna hai mujhe koi bojh unpe, kitna banu yaar, kitna rulau apni madamji ko.
-Tu hi bata kya karu, papa ka chehra dekhta hoon toh rona aata hai, uska chehra dekhta hoon toh uski yaad aati hai... uspe bewajah bhadak jata hoon aur sabkuch kharab kar deta hoon.`,
+Arry.... kya haal h bhai.... nhi nhi woh thoda busy tha kaam mein.
+Kya?... acha haan meri baat toh reh gyi bichme na, failures ke baare mein bta rha tha.
+Nhi nhi upar ke lines nhi padhunga warna abhi hi ro dunga, itna toh rotlu nhi tha par kya karu yaar, jisne apne emotions ko convey krna sikhaya, uspe hi apne emptions control nhi kar paya. khushi aur khush hone ki wajah, dono ko kho diya maine.
+Ab bhagwan bhi ye na bolde ki “Kitna haste rhoge, kabhi khush bhi ho liya karo”.
+
+Sach btau toh agar kuch aisa hota ki mere maa baap ko har mahine paise milte rehte aur mere madamji, haan meri khush hone ki wajah woh humesha ke liye muskurati rehti, ya mujhe bhul jati toh abhi hi jaan dedeta. nhi sochta mai, agar meri iss duniya se existence khatam hojati toh kabka karwaleta.
+
+Depressed nhi hoon yaar. depressed toh bache hote h. mai majboor hoon. 100 chizo se bandha hua hoon, itna gir gya hoon ki tere saath share karna padh rha h, nhi dena chaahta apne maa baap ko koi stress.
+Nhi banna hai mujhe koi bojh unpe, kitna bnu yaar, kitna rulau apni madamji ko. aise toh mujhe kuch haasil nhi hoga, khuli aatma ki tarah bhatakta rhunga.
+Tu hi bta kya karu, papa ka chehra dekhta hoon toh rona ajata h, uska chehra dekhta hoon toh uski yaad aati h, uspe bewajah bhadak jata hoon aur sabkuch kharab deta hoon.`,
         },
         {
           id: 3,
           date: "Early October 2026",
-          tag: "Compro?",
+          tag: "Compro? • Ultimatum",
           title: "Compro? (Ultimatum & Silence)",
           excerpt:
-            "Her: 'Kitna royi hun sirf kuch log jaante h bas. Nhi hun khush tere bina...' Atleast kuch log toh jaante h aapke rone ke baare mein...",
+            "Her: 'Tujhe insta dekhke bhale hi esa lagg rha ho ki mujhe koi farak nhi paddd rha aur me kitni khush hun... Kitna royi hun sirf kuch log jaante h bas...' Atleast kuch log toh jaante h aapke rone ke baare mein...",
+          images: [
+            {
+              url: "./notes_media/note_compro_chat.jpg",
+              caption: "Chat screenshot of Akanksha's message & ultimatum",
+            },
+          ],
           content: `Compro?
+
 Her:
-"Tujhe insta dekhke bhale hi esa lagg rha ho ki mujhe koi farak nhi paddd rha aur me kitni khush hun... Kitna royi hun sirf kuch log jaante h bas. Nhi hun khush tere bina adhuri hun me pls baat krle yaar. Tujhe bohot kuch btaanaaa h mujhe."
+"Tujhe insta dekhke bhale hi esa lagg rha ho ki mujhe koi farak nhi paddd rha aur me kitni khush hun…..
+Kitna royi hun sirf kuch log jaante h bas 
+Nhi hun khush tere bina adhuri hun me pls baat krle yaar 
+Tujhe bohot kuch btaanaaa h mujhe"
 
 Atleast kuch log toh jaante h aapke rone ke baare mein.
-Idhar toh logo ko ye hi nhi pta ki mere par kya beet rhi h. Na mai batana pasand karunga kisiko. Aadhi raat mein rone waale bande ke baare mein kisko kya pta rahega.
-2 din se jo tadpa hoon ek ek notif check kara h maine, kya pata madamji ka msg aa hi jaye. Space chaiye tha indirectly toh de diya tha.
+Idhar toh logo ko ye hi nhi pta ki mere par kya bit rhi h. Na mai btana pasand karunga kisiko.
+Aadhi raat mein rone waale bande ke baare mein kisko kya pta rhega.
+2 din se jo tadpa hoon ek ek notif check kara h maine. kya pta madamji ka msg aa hi jaye. space chaiye tha indirectly toh dediya tha.
 
-Shi h yaar, really aur kaise bhi mere se baat karegi woh bichari. Mai dimaag kharab kar deta hoon. Sorry.
-Utna kaafi tha kyunki mere paas aur kuch nahi tha uske siwa. Toh raatko bas hostel mein ghumta raha, rota raha. Mummy se baat kri, sundar lagri thi mummy. Itni yaad aari thi papa mummy ki, ki udhar bhi rone jaisi haalat. Kya hogya h mujhe nhi pta.
+Kal raat meri madamji video call pe baune aur kashish ji ke saath. Mujhe pta bhi nhi chalta agar mere coincidentally neend nhi tut ti aur anshuman ye nhi kehta baune ko ki “are baune tu teri bandi aur abhik ki bandi kya kar rhe ho”.
+Shi h yaar. really aur kaise bhi mere se baat karegi woh bichari. mai dimaag chod deta hoon.
+Sorry
 
-Abhi aaj madamji ne ultimatum de diya hai:
+Utna kaafi tha kyunki mere paas aur kn tha uske siwa. toh raatko bas hostel mein ghumta rha, rota rha. mummy se baat kri, sundar lagri thi mummy. Itni yaad aari thi papa mummy ki, ki udhar bhi rone jaisi haalat.
+Kya hogya h mujhe nhi pta.
+
+Abhi aaj madamji ne ultimatum dediya h, ruko dikhata hoon.
 Kya chaiye mujhe,
-Aakhri baar bata doon kya chaiye,
-Rehna hai saath mein ya nahi.
-In sabka jawab maang rahi hain. Khair in sab ka jawab toh idhar diya hai maine. Uski bhi kya galti, unhe thodi pata chalega.`,
+Aakhri baar btadu kya chaiye,
+Rehna h saathme ya nhi.
+
+In sabka jawab maagri h. khair insab ka jawab toh idhar diya h maine. uski bhi kya galti, unhe thodi pata chalega.`,
         },
         {
           id: 4,
           date: "Mid October 2026",
-          tag: "Chali Gyi",
-          title: "Chali Gyi...",
+          tag: "Chali Gyi • Heartbreak",
+          title: "Chali Gyi (Phone Switch Off Kya Hua...)",
           excerpt:
-            "Chali gyi... Phone switch off kya hua mera, chali gyi woh. Aaj mera sabse keemti tukda mere shareer ka chala gya...",
-          content: `Chali gyi...
-Phone switch off kya hua mera, chali gyi woh. Rota reh gya mai. Kehti h pyaar karti h mujhse, par saamne kabhi nahi aayegi. Khud se poochta reh jaunga ki itna bura tha mai ki usne apni shakal tak dikhane ki ummeed nahi dilayi.
+            "Chali gyi.... Phone switch off kya hua mera, chali gyi woh. rota reh gya mai. Aaj mera sabse kimti tukda meri sharir ka chala gya. Saanse band hori h. btade kaise mai jiyunga tere bina...",
+          images: [],
+          content: `Chali gyi
 
-Bheek maangta reh gya, bas paas jana chahta tha. Bolna chahta tha ki mat sun unki baatein, mat kar itna unke liye jinhe teri parwah nahi. Godh mein sona chahta tha, yeh dilaasa dilana chahta tha ki woh 4 log chhod, mai hoon na.
-Nahi samjha paaya.
-Galtiyan huyi, dono ne bheek maangi, par dono nahi hate apne stand se.
+Chali gyi…. Phone switch off kya hua mera, chali gyi woh. rota reh gya mai. kehti h pyaar karti h mujhse, par saamne kbhi nhi ayegi. khudse puchta reh jaunga ki itna bura tha mai ki usne apni shakal tak dikhane ki ummeed nhi dilayi.
 
-Aaj mera sabse keemti tukda mere shareer ka chala gya.
-Saansein band ho rahi hain. Bata de kaise mai jiyunga tere bina?
-Khushi ki wajah bhi tum thi, rone ki wajah bhi tum bani. "I love you the most" bolke chhod diya. Bich sadak pe. Dono taraf kohra, kuch nazar nahi aa raha. Sirf woh dikh rahi hai. Pata nahi aisa lag raha hai ki agar woh khayi mein bhi lejaa rahi hai toh mai chalne ke liye taiyaar hoon. Ek baar hug karna chahta hoon.
+Bheek maangta reh gya, bas paas jana chaahta tha, bolna chaahta tha ki mat sun unki baate, mat kar itna unke liye jinhe teri parwa nhi. Godh mein sona chaahta tha, yeh dilasa dilana chaahta tha ki woh 4log maachudaye, mai hoona.
+Nhi smjha paya.
 
-Akanksha agar hum ab bhi saath hain, aur agar na bhi hain, aur agar tum ye padh rahi ho jo mai kabhi bhi nahi chahunga kyunki mai tumhara dil nahi dukhana chahta... par please...
-Ek baar kaske mere paas aana aur mere sir ko seene se gale laga dena, toh mai saara jahaan bhool jaunga, aur waapas tumhare paas aa jaunga.`,
+Kal ke baad se toh ye sochta hoon ki kaash agar iklauta beta nhi hota toh kabka jaan dedeta. Khush rehne ki koi wajah nhi milri. milti h toh koshish karta hoon ki parents ya meri waali ke saath baat lu.
+Par ab toh woh bhi chhod rhi h.
+
+Galtiyan huyi, dono ne bheek maangi, par dono nhi hate apne stand se.
+Aaj mera sapne kimti tukda meri sharir ka chala gya.
+Saanse band hori h. btade kaise mai jiyunga tere bina.
+Khushi ki wajah bhi tum thi, Rone ki wajah bhi tum bni. I love u the most bolke chhod diya.
+Bich sadak pe. dono taraf kohra, kn nazar ara. sirf woh dikhri, pta nhi aisa lgra ki woh agar khayi mein bhi lejaa rhi h toh mai chalne ke lite taiyaar hoon, ek baar hug karna chaahta hoon.
+
+Akanksha agar hum ab bhi saath h, aur agar na bhi h, aur agar tum ye padh rhi ho jo mai kbhi bhi nhi chahunga kyunki mai tumhara dil nhi dukhana chaahta, par pls……
+Ek baar kaske mere paas ana aur mere sir ko sine se gale lagadena, toh mai sara jahaan bhul jaunga, aur waapas tumhare paas ajaunga.`,
         },
         {
           id: 5,
           date: "October 2026",
-          tag: "No Title",
-          title: "The Unspoken Heartbreak",
+          tag: "No Title • 5 Chat Screenshots",
+          title: "No Title (The Complete 5 Pages & Screenshots)",
           excerpt:
-            "October is a month of getting or losing ur precious ones. 2023 mein mila tha... 26 mein shayad loss hai... Phone kholta hoon toh uski tasveer saamne aati hai...",
-          content: `No title...
-Umm... thik ho raha tha sabkuch? Aisa laga mujhe... insta notes ke zariye baat kar rahe the. Mere gaane ka reply usne apne gaane se diya kehkar ki "aa rahi hoon tere paas... nahi jaungi kabhi chhodke"... jo khush mai hua tha ki mai apne saare gham bhool jana chahta tha.
-Quiz tha mera, socha thoda padh lu, baune ka laptop liya... phir kya dekhta hoon, meri pyaari madamji ke msgs aaye the...
-Mere haath kaanp gaye bhai.
+            "Umm….thik hora tha sabkuch? aisa laga mujhe… insta notes ke zarite baat karre the... 'But i never forgave him?' Ek 3rd person ko sach bolna was the one which broke me from core... October is a month of getting or losing ur precious ones...",
+          images: [
+            {
+              url: "./notes_media/note_notitle_chat1.jpg",
+              caption: "Chats with Bauna (Page 1) — 'Meri pyaari madamji ke msgs aaye h...'",
+            },
+            {
+              url: "./notes_media/note_notitle_chat2.jpg",
+              caption: "Chats with Bauna (Page 1 continuation)",
+            },
+            {
+              url: "./notes_media/note_notitle_switchoff.jpg",
+              caption: "'Switch Off' Chat (Page 2) — Phone discharge ho gaya tha",
+            },
+            {
+              url: "./notes_media/note_notitle_fullchat.jpg",
+              caption: "'But I Never Forgave Him?' (Page 3 & 4) — That broke me from the core",
+            },
+            {
+              url: "./notes_media/note_notitle_compliment.jpg",
+              caption: "The Final Exchange (Page 5) — 'October is a month of getting or losing ur precious ones'",
+            },
+          ],
+          content: `No title
 
-"But i never forgave him?"
-Bhai par usne toh question mark bhi daala hai, tu itna kyu soch raha hai... kar diya hoga usne maaf... note kyu hi lagati par...
-I never forgave him... jhooth kyu bola mujhe? Kyu daala note? Ek 3rd person ko sach bolna was the one which broke me from the core. Muh pe mana kar deti ki nahi kara hai maaf, jhooth was the only option u got Akanksha???
-"I love you" ka bhi likha hua kahi aur jaake bolegi ki "i never loved him?"... Nahi of course not, ik u love me. Haan hoon pagal, nahi dikhti uske siwa koi aur.
+Umm….thik hora tha sabkuch? aisa laga mujhe… insta notes ke zarite baat karre the.
+Mere gaane ka reply usne apne gaane se diya kehlar ki aarhi hoon tere paas…..nhi jaungi kabhi chhodke……jo khush mai hua tha ki mai apne saare gam bhulana chaahta tha.
+Quiz ka mera, socha thoda padhlu, Baune ka laptop liya …… ek toh padhai meri, mai itna dhakkan jaisa….phir kya dekhta hoon, meri pyaari madamji ke msgs aaye h Baune ko….
+Mere haath gye bhai
+Nhi hua mujhse control
+Self harm?
+Ho sakta h…..humare chats idhar h,
+Ye meri Akanksha thi jiske liye maine sabkuch chhod diya tha….may mein jo saumil ne uske saath kiya tha ab mere saath hora h….
+Chats hi toh h….I trust my girl…..kuch kaaran ki wajah se hi bheja hoga, after all abhi nya bhai bana h aur bauna mera acha dost bhi h toh kuch issues nhi h mujhe….maybe she needed a way to sort…..maine kbhi kisiko nhi btaya humara matter, chaahe kuch bhi hojau…ma chudaye 4 logo ka opinion, apne khud apni madamji ke saath chize sort karunga, kisiko baap bnne nhi dera mai meri chiz pe….still ….acceptable…
+Waah yaar pta nhi chala par dot dot wala abhik waapas bahaar ara h ab, itni mushkil se Krish bna tha, shi h yaar!!
 
-October is a month of getting or losing ur precious ones. 2023 mein mila tha... 26 mein shayad loss hai.
-Phone kholta hoon toh uski tasveer saamne aa jaati hai. Archive mein usko 4 baar dekh chuka hoon. Subah se 2 baar 3 saal ki saari memories dekh li. Ghutan ho rahi hai... par mar bhi nahi sakta. Agar koi "chali gyi" padhke idhar ye padhega toh bhai bichare ka bhi dil toot jayega... Humesha achi ending nahi milti bhai...`,
+“Switch off”, ji madamji mera phone sachi mein discharge hogya tha, jinse baat karne ke loye tarasta hoon unko net off karke ya block karke khona nhi chahunga kabhi.
+
+Nhi nhi bada karke isiliye rkha h coz mai andha tha, dikhta nhi h mujhe…tu dekh…ache se
+Woh reply partial wala likhne se pahle mere haath kaap rhe the ki mai waaps kuch gadbad nhi karu….
+Kardi bhai….
+“But i never forgave him?”
+Bhai par usne toh question mark bhi dala h, tu itna kyu sochra h….kardiya hoga usne maaf…note kyu hi lagati par…
+Aadha ghanta toh yhi chiz khudko bolta reh gya ki yhi hua hoga….
+Tabiyat puchne kyu aare h log mujhse, aakhri time aane wala h kya….shayad mujhe hi nhi pta ….
+Khair
+I never forgave him, abhi kyu rona aarha, jo ladka kisi chiz pe nhi rota tha, ab har minute rota h…har samay practical rehne waale bnde ki practicality khatam ho chuki h…..itna practical tha ki ab kisise emotional hi nhi pata…
+aadhi zindagi notepad pe nikalne waali h bhai….tu haina….depression nhi kehte usko par (ye likhke rkhta hoon warna jis din kisine ye padha aur mai na rha toh ye sochega ki sala depression se margya)
+Sorry, Off topic chala jata hoon boht, toh sun
+I never forgave him….jhooth kyu bola mujhe, kyu dala note…..ek 3rd person ko sach bolna was the one which broke me from core….muh pe mana kardeti ki nhi kara h maaf, jhooth was the only option u got Akanksha???
+I love you ka bhi likha hua khi aur jaake bolegi ki “i never loved him?”….nhi ofc not ik u love me (are tu maan kyu nhi rha, itna pagal hogya h kya uske pyaar mein) haan hoon pagal…kya karlega tu….nhi dikhti uske siwa koi aur….
+“Nhi pta ki mujhe kya baat karni h aur kaise karni h”
+Jhooth toh nhi bolti yaar….note daaldiya jab u dont meant that…..ab agar ye boli ki maine toh reply nhi kiya tere chat ka mera sachi mein duniya se hojayega kyunki jis ladki ko practicality ka P maine raat raat bhar sikhaya usne mere saamne hi practical banne ka sabse bada example set kardiya….
+
+Ye sabke baad ek ye bhi compliment mila mujhe “yaar dimaag chhod dega mera woh”
+I think…..
+Chhod yaar ye toh tujhe bhi nhi btaunga how i felt….sala tujhe tak nhi btana chaah rha, aur udhar mai bazaar mein bik gya…
+Personal life pe focus karo aap, shi kaha baune ne…i really support it….the best he could say to that reply….
+Oho Kashish didi ko bhi pta h ….abhi udhar bhi baat jayegi…wah yaar….
+Saare mard ek jaise hi hote h…nhi keh paate …nhi keh paya….kal se bs hase jaa rha hoon sabke saamne
+Par khush hone ka mauka nhi milra…ek hi chiz ghum rhi h….na kisiko bta paa rha, na btaunga bhi…
+Jisko bta skta tha usne hi toh kara h….
+Ab kya mummy ko btau? nhi be pagal h kya….unko alag mere career ki chinta h…
+Papa ko? unko dekhke toh mai rone lag jata hoon….are yaar abhi kyu rona ara h, unka toh bas naam liya h….
+October is a month of getting or losing ur precious ones, 2023 mein mila tha…26 mein sayad loss h….
+Phone kholta hoon toh uski tasvur saamne ajati h…archive mein usko 4baar dekh chuka hoon…subah se 2 baar 3 saal ki saari memories dekhli….
+Ghutan hori h….par mar bhi nahi skta….
+Chhod yaar!! agar koi “chali gyi” padke idhar ye padhega toh bhai bichare ka bhi dul tut jayega….humesha achi ending nhi milti bhai…
+Chhod tu…`,
         },
         {
           id: 6,
           date: "Late October 2026",
-          tag: "….",
-          title: "Dekh Kitni Pyaari Lag Rahi Hai...",
+          tag: "… • Her Story Screenshot",
+          title: "… (Story Dekhi Uski, Kitni Cute Hai Yaar)",
           excerpt:
-            "Story dekhi uski... dekh kitni pyaari lag rahi hai. Kitni cute hai yaar... Bas ye pray karunga ki use kabhi ye notes na dikhein...",
-          content: `....
-Story dekhi uski... dekh kitni pyaari lag rahi hai.
-Kitni cute hai yaar... kaun kaise hi jhagda kar sakta hai iske saath?
+            "Story dekhi uski… dekh kitni pyaari lagri h… Kitni cute h yaar….. kaun kaise hi jhagda kar sakta h iske saath… Bas ye pray karunga ki use kabhi ye notes na dikhe…",
+          images: [
+            {
+              url: "./notes_media/note_story_akanksha.jpg",
+              caption: "Screenshot of Akanksha's Story — 'Kitni cute h yaar...'",
+            },
+          ],
+          content: `….
 
-Bas ye pray karunga ki use kabhi ye notes na dikhein... warna woh khudko dosh degi... aur rone lagegi... aur woh mujhse dekha nahi jayega.
-Kaash use kabhi pata hi na chale ki mai kis haalat mein hoon.
-Chhodke chali jayegi yaar...`,
+Story dekhi uski… dekh kitni pyaari lagri h…
+Kitni cute h yaar….. kaun kaise hi jhagda kar sakta h iske saath…
+Bas ye pray karunga ki use kabh ye notes na dikhe…. warna woh khudko dosh degi… aur rone lagegi…. aur woh mujhse dekha nhi jayega…
+Kaash use kabhi pta hi na chale ki mai kis haalat mein hoon….
+Chhodke chali jayegi yaar….`,
         },
       ];
 
@@ -941,21 +1062,43 @@ Chhodke chali jayegi yaar...`,
                       <div className="card-gloss absolute -inset-full bg-gradient-to-r from-transparent via-rose-400/10 to-transparent pointer-events-none opacity-0" />
 
                       <div>
-                        {/* Date Badge */}
-                        <div className="flex items-center justify-between mb-3">
+                        {/* Date Badge & Photo indicator */}
+                        <div className="flex items-center justify-between mb-3 gap-2 flex-wrap">
                           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-950/70 border border-rose-500/30 text-rose-300 text-xs font-semibold tracking-wide">
                             <span>🗓️</span> {note.date}
                           </span>
-                          <span className="text-[11px] text-rose-400/60 font-mono">
-                            {note.tag}
-                          </span>
+                          {note.images && note.images.length > 0 && (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-rose-500/20 border border-rose-400/40 text-[11px] text-rose-200 font-medium">
+                              <span>📷</span> {note.images.length === 1 ? "1 Image" : `${note.images.length} Images`}
+                            </span>
+                          )}
                         </div>
+
+                        {/* Image Preview Banner if note has images */}
+                        {note.images && note.images.length > 0 && (
+                          <div
+                            onClick={() => setSelectedNote(note)}
+                            className="relative mb-3.5 h-36 rounded-xl overflow-hidden border border-rose-500/30 bg-black/40 group/thumb cursor-pointer shadow-inner"
+                          >
+                            <img
+                              src={note.images[0].url}
+                              alt={note.images[0].caption || note.title}
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover/thumb:scale-105"
+                              loading="lazy"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+                            <span className="absolute bottom-2 left-2.5 right-2.5 text-[11px] text-rose-200/90 font-medium truncate flex items-center justify-between">
+                              <span>{note.images[0].caption || "Attached Screenshot"}</span>
+                              <span className="text-rose-300 font-bold text-xs">View ↗</span>
+                            </span>
+                          </div>
+                        )}
 
                         <h3 className="text-lg sm:text-xl font-bold text-rose-100 group-hover:text-rose-300 transition-colors duration-300 mb-2.5">
                           {note.title}
                         </h3>
 
-                        <p className="text-xs sm:text-sm text-rose-200/70 leading-relaxed font-light italic mb-5 line-clamp-4">
+                        <p className="text-xs sm:text-sm text-rose-200/70 leading-relaxed font-light italic mb-5 line-clamp-3">
                           &ldquo;{note.excerpt}&rdquo;
                         </p>
                       </div>
@@ -964,7 +1107,7 @@ Chhodke chali jayegi yaar...`,
                         onClick={() => setSelectedNote(note)}
                         className="w-full mt-2 py-2.5 px-4 rounded-xl bg-rose-950/50 hover:bg-rose-600/80 border border-rose-500/30 hover:border-rose-400 text-rose-200 hover:text-white text-xs font-semibold tracking-wide transition-all duration-300 flex items-center justify-center gap-2 group-hover:shadow-[0_0_20px_rgba(244,63,94,0.4)]"
                       >
-                        <span>Read Full Note</span>
+                        <span>Read Full Note & Media</span>
                         <span className="text-sm">📖</span>
                       </button>
                     </div>
@@ -1062,12 +1205,12 @@ Chhodke chali jayegi yaar...`,
 
           {/* ================= FULL DIARY NOTE MODAL ================= */}
           {selectedNote && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-300">
-              <div className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto p-7 sm:p-9 rounded-3xl bg-gradient-to-b from-[#1b0833] via-[#120424] to-[#0a0216] border border-rose-500/40 shadow-[0_0_60px_rgba(244,63,94,0.45)] text-left">
-                <div className="flex items-center justify-between pb-4 border-b border-rose-500/20 mb-5">
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/85 backdrop-blur-md animate-in fade-in duration-300">
+              <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-[#1b0833] via-[#120424] to-[#0a0216] border border-rose-500/40 shadow-[0_0_60px_rgba(244,63,94,0.45)] text-left scrollbar-thin scrollbar-thumb-rose-500/30">
+                <div className="flex items-start justify-between pb-4 border-b border-rose-500/20 mb-5 gap-4">
                   <div>
                     <span className="text-xs text-rose-400 font-mono tracking-widest uppercase block mb-1">
-                      🗓️ Published: {selectedNote.date}
+                      🗓️ Published: {selectedNote.date} • {selectedNote.tag}
                     </span>
                     <h3 className="text-xl sm:text-2xl font-bold text-rose-100">
                       {selectedNote.title}
@@ -1075,28 +1218,115 @@ Chhodke chali jayegi yaar...`,
                   </div>
                   <button
                     onClick={() => setSelectedNote(null)}
-                    className="w-9 h-9 rounded-full bg-rose-950/70 border border-rose-500/30 text-rose-300 hover:text-white hover:bg-rose-600 flex items-center justify-center text-lg transition-all"
+                    className="w-9 h-9 flex-shrink-0 rounded-full bg-rose-950/70 border border-rose-500/30 text-rose-300 hover:text-white hover:bg-rose-600 flex items-center justify-center text-lg transition-all"
                     aria-label="Close Note"
                   >
                     ✕
                   </button>
                 </div>
 
-                <div className="text-rose-200/90 text-sm sm:text-base leading-relaxed font-light whitespace-pre-line space-y-4 pr-1">
+                {/* Embedded Screenshots / Photos in Modal */}
+                {selectedNote.images && selectedNote.images.length > 0 && (
+                  <div className="mb-6 p-4 rounded-2xl bg-[#140628]/90 border border-rose-500/30 shadow-lg">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-xs font-semibold text-rose-300 uppercase tracking-wider flex items-center gap-1.5">
+                        <span>📸</span>
+                        <span>Attached Pictures & Screenshots ({selectedNote.images.length})</span>
+                      </span>
+                      <span className="text-[11px] text-rose-400/80 italic">Click any image to enlarge 🔍</span>
+                    </div>
+
+                    <div
+                      className={`grid gap-3 ${
+                        selectedNote.images.length === 1
+                          ? "grid-cols-1"
+                          : selectedNote.images.length === 2
+                          ? "grid-cols-1 sm:grid-cols-2"
+                          : "grid-cols-2 sm:grid-cols-3"
+                      }`}
+                    >
+                      {selectedNote.images.map((img, imgIdx) => (
+                        <div
+                          key={imgIdx}
+                          onClick={() => setPreviewImage(img)}
+                          className="group/thumb relative rounded-xl overflow-hidden border border-rose-500/30 hover:border-rose-400 bg-black/60 cursor-pointer shadow-md transition-all hover:scale-[1.02] flex flex-col"
+                        >
+                          <div className="relative w-full h-44 sm:h-52 bg-black/70 flex items-center justify-center overflow-hidden">
+                            <img
+                              src={img.url}
+                              alt={img.caption || `Screenshot ${imgIdx + 1}`}
+                              className="w-full h-full object-contain p-1 transition-transform duration-300 group-hover/thumb:scale-105"
+                              loading="lazy"
+                            />
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/thumb:opacity-100 transition-opacity flex items-center justify-center">
+                              <span className="px-3 py-1.5 rounded-full bg-rose-600/90 text-white text-xs font-semibold shadow-lg flex items-center gap-1.5">
+                                <span>🔍</span> Click to Enlarge
+                              </span>
+                            </div>
+                          </div>
+                          {img.caption && (
+                            <div className="p-2.5 bg-[#0e031c] border-t border-rose-500/20 text-[11px] text-rose-200/90 font-medium leading-tight">
+                              {img.caption}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Note Full Text */}
+                <div className="text-rose-100/95 text-sm sm:text-base leading-relaxed font-light whitespace-pre-line space-y-4 pr-1 selection:bg-rose-500/40 selection:text-white bg-black/20 p-5 rounded-2xl border border-rose-500/15">
                   {selectedNote.content}
                 </div>
 
                 <div className="mt-8 pt-4 border-t border-rose-500/20 flex flex-col sm:flex-row items-center justify-between gap-3">
-                  <span className="text-xs text-rose-400/60 font-serif italic">
-                    From Krish's private notepad • Written for Akanksha
+                  <span className="text-xs text-rose-400/70 font-serif italic">
+                    From Krish's private journal notes • September & October 2026
                   </span>
                   <button
                     onClick={() => setSelectedNote(null)}
-                    className="px-6 py-2 rounded-full bg-rose-600 hover:bg-rose-500 text-white font-medium text-xs sm:text-sm transition-all shadow-md active:scale-95"
+                    className="px-6 py-2.5 rounded-full bg-rose-600 hover:bg-rose-500 text-white font-medium text-xs sm:text-sm transition-all shadow-md active:scale-95"
                   >
                     Close Note 🌹
                   </button>
                 </div>
+              </div>
+            </div>
+          )}
+
+          {/* ================= FULLSCREEN LIGHTBOX MODAL ================= */}
+          {previewImage && (
+            <div
+              className="fixed inset-0 z-[60] flex items-center justify-center p-3 sm:p-6 bg-black/95 backdrop-blur-xl animate-in fade-in duration-200"
+              onClick={() => setPreviewImage(null)}
+            >
+              <div
+                className="relative max-w-4xl w-full max-h-[94vh] flex flex-col items-center justify-center"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  onClick={() => setPreviewImage(null)}
+                  className="absolute -top-11 right-0 text-white hover:text-rose-300 bg-white/10 hover:bg-white/20 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 border border-white/20 shadow-md"
+                  aria-label="Close Lightbox"
+                >
+                  <span>Close View</span>
+                  <span>✕</span>
+                </button>
+
+                <div className="relative overflow-hidden rounded-2xl border border-rose-500/40 shadow-[0_0_60px_rgba(244,63,94,0.4)] max-h-[80vh] flex items-center justify-center bg-black/90 p-2">
+                  <img
+                    src={previewImage.url}
+                    alt={previewImage.caption || "Fullscreen preview"}
+                    className="max-w-full max-h-[76vh] object-contain rounded-lg"
+                  />
+                </div>
+
+                {previewImage.caption && (
+                  <p className="mt-3 text-center text-xs sm:text-sm text-rose-200 font-medium bg-[#160829]/95 px-5 py-2 rounded-full border border-rose-500/30 max-w-2xl shadow-lg">
+                    {previewImage.caption}
+                  </p>
+                )}
               </div>
             </div>
           )}
