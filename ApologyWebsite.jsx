@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 export default function ApologyWebsite() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [selectedNote, setSelectedNote] = useState(null); // Selected diary entry for modal
   const [gsapLoaded, setGsapLoaded] = useState(false);
   const [activeView, setActiveView] = useState("landing"); // 'landing' or 'letter'
   const [activeWaypoint, setActiveWaypoint] = useState(0);
@@ -14,6 +15,7 @@ export default function ApologyWebsite() {
   const heroTitleRef = useRef(null);
   const landingCardRef = useRef(null);
   const quotesRef = useRef([]);
+  const diaryCardsRef = useRef([]);
   const photosRef = useRef([]);
   const petalsContainerRef = useRef(null);
   const trailContainerRef = useRef(null);
@@ -54,6 +56,129 @@ export default function ApologyWebsite() {
         "Without your warmth, forgiveness, and smile, I am completely stranded. Please don't leave me alone.",
       icon: "🫂",
       tag: "Unconditional Love",
+    },
+  ];
+
+  // The 6 personal diary notes, ordered chronologically by publication date
+  const diaryNotes = [
+    {
+      id: 1,
+      date: "18 September 2026",
+      tag: "18 9 26",
+      title: "Kya Chhupa Raha Hoon Mai?",
+      excerpt:
+        "Kya chhupa rha hoon mai? tumse? Mujhe khud nhi pta... Rona bhi ata h toh kiske sine pe sir rkhke rou...",
+      content: `Kya chhupa rha hoon mai? tumse?
+Mujhe khud nhi pta. Chhupa bhi kyu rha hoon ye bhi nhi pta. Ik boht childish sound karti h ki kyu mai itne mein gussa hogya ki 2 photos nhi lagayi and all. I am not angry I am upset. Upset coz ab mai convo mein nhi ata jab bhi tum post karte ho, ab mai convo mein nhi ata jab tum busy rehte ho. Jo subah bola maine uske liye toh mai abhi bhi regret mein hoon that how can i say that to my girl, the girl whom i love the most, the girl who loves me the most.
+
+Idk yaar kaise bolta chala gya, maybe frustration of not feeling the way u love me or it maybe my fault to not able to understand. Ab aisa lag rha h ki aap nakhre dikhate ho bas whi pyaar karna hota h, maybe mai apka pyaar dekh nhi paa rha par it hurts. Idk yaar, i wanted somebody so that i can hug her.
+
+Rona bhi ata h toh kiske sine pe sir rkhke rou, tumhare paas aane laga tha par hum ache se baat hi nhi kar paate, har baar jhagda hojata h, uss jhagde ko sort karte h toh waapas jhagda hojata h. Par sometimes i feel hollow inside looking like ki meri saari mehnat aapko manane ki koi kaam mein hi nhi aari, kyunki nakhre ke baad agar aap smile bhi karo na toh bhi mai khush hojata hoon. Tarasta hoon smile ke liye par aap karte hi nhi. Kyu yaar, itna bhi bura nhi hoon, galti kari h maafi maangra hoon, humesha maangunga.
+
+Aur pls ye break up jaisi chize mat bola karo, mai kabhi soch bhi nhi skta ye sab bolne ki. Mujhe jaisi aap ho chalega, jitne nakhre karne h karlo, nhi bolunga bhondu ya moti, photo bhi delete kardunga, par pls mujhe mat delete karo life se.
+I am sorry.
+Ab ye aapko padhne mile ya na mile, par mai chahta hoon ki bas aap ye tab padhe jab ye saari chize thik ho chuki ho na ki aap ye padhke thik hone ki koshish karo. Dukhi bhi reh lunga, bas saath rho.
+I love you the most Akanksha ❤️`,
+    },
+    {
+      id: 2,
+      date: "30 September 2026",
+      tag: "30 Sep • Birthday Eve",
+      title: "Kal Mera Birthday Hai...",
+      excerpt:
+        "Date dekh rhe ho... 30 september, kal mera bday h. Kaunsa bday, khush hone waali chiz hoti h kya? Toot sa gya hoon mai...",
+      content: `Failed in jee, Failed in advance.
+Had a back injury, somehow survived.
+Insisted my parents to get admission in this hell. Papa still agreed, paid 30 lacs for me. Just for me. 30 lacs... Ek middleclass aadmi ke liye 30 lacs unke net worth ka 30% jab pay karke apne bete ko 4 saal ke liye aisi jagah padhane bheja.
+Koshish bhi ki maine, par ab nahi ho pa raha. Toot sa gya hoon mai.
+
+Date dekh rhe ho... 30 september, kal mera bday h. Kaunsa bday, khush hone waali chiz hoti h kya? Mai bhi khush hona chahta hoon, par ho nahi pa raha. Pata nahi par aansu ruk hi nahi rahe hain.
+Failed as a son too.
+Jisne apne emotions ko convey karna sikhaya, uspe hi apne emotions control nahi kar paya. Khushi aur khush hone ki wajah, dono ko kho diya maine. Ab bhagwan bhi ye na bolde ki "Kitna haste rahoge, kabhi khush bhi ho liya karo".
+
+Sach batau toh agar kuch aisa hota ki mere maa-baap ko har mahine paise milte rehte aur meri madamji, haan meri khush hone ki wajah, woh humesha ke liye muskurati rehti ya mujhe bhool jaati, toh abhi hi jaan de deta.
+Depressed nahi hoon yaar, mai majboor hoon. 100 chizo se bandha hua hoon. Nahi banna hai mujhe koi bojh unpe, kitna banu yaar, kitna rulau apni madamji ko.
+Tu hi bata kya karu, papa ka chehra dekhta hoon toh rona aata hai, uska chehra dekhta hoon toh uski yaad aati hai... uspe bewajah bhadak jata hoon aur sabkuch kharab kar deta hoon.`,
+    },
+    {
+      id: 3,
+      date: "Early October 2026",
+      tag: "Compro?",
+      title: "Compro? (Ultimatum & Silence)",
+      excerpt:
+        "Her: 'Kitna royi hun sirf kuch log jaante h bas. Nhi hun khush tere bina...' Atleast kuch log toh jaante h aapke rone ke baare mein...",
+      content: `Compro?
+Her:
+"Tujhe insta dekhke bhale hi esa lagg rha ho ki mujhe koi farak nhi paddd rha aur me kitni khush hun... Kitna royi hun sirf kuch log jaante h bas. Nhi hun khush tere bina adhuri hun me pls baat krle yaar. Tujhe bohot kuch btaanaaa h mujhe."
+
+Atleast kuch log toh jaante h aapke rone ke baare mein.
+Idhar toh logo ko ye hi nhi pta ki mere par kya beet rhi h. Na mai batana pasand karunga kisiko. Aadhi raat mein rone waale bande ke baare mein kisko kya pta rahega.
+2 din se jo tadpa hoon ek ek notif check kara h maine, kya pata madamji ka msg aa hi jaye. Space chaiye tha indirectly toh de diya tha.
+
+Shi h yaar, really aur kaise bhi mere se baat karegi woh bichari. Mai dimaag kharab kar deta hoon. Sorry.
+Utna kaafi tha kyunki mere paas aur kuch nahi tha uske siwa. Toh raatko bas hostel mein ghumta raha, rota raha. Mummy se baat kri, sundar lagri thi mummy. Itni yaad aari thi papa mummy ki, ki udhar bhi rone jaisi haalat. Kya hogya h mujhe nhi pta.
+
+Abhi aaj madamji ne ultimatum de diya hai:
+Kya chaiye mujhe,
+Aakhri baar bata doon kya chaiye,
+Rehna hai saath mein ya nahi.
+In sabka jawab maang rahi hain. Khair in sab ka jawab toh idhar diya hai maine. Uski bhi kya galti, unhe thodi pata chalega.`,
+    },
+    {
+      id: 4,
+      date: "Mid October 2026",
+      tag: "Chali Gyi",
+      title: "Chali Gyi...",
+      excerpt:
+        "Chali gyi... Phone switch off kya hua mera, chali gyi woh. Aaj mera sabse keemti tukda mere shareer ka chala gya...",
+      content: `Chali gyi...
+Phone switch off kya hua mera, chali gyi woh. Rota reh gya mai. Kehti h pyaar karti h mujhse, par saamne kabhi nahi aayegi. Khud se poochta reh jaunga ki itna bura tha mai ki usne apni shakal tak dikhane ki ummeed nahi dilayi.
+
+Bheek maangta reh gya, bas paas jana chahta tha. Bolna chahta tha ki mat sun unki baatein, mat kar itna unke liye jinhe teri parwah nahi. Godh mein sona chahta tha, yeh dilaasa dilana chahta tha ki woh 4 log chhod, mai hoon na.
+Nahi samjha paaya.
+Galtiyan huyi, dono ne bheek maangi, par dono nahi hate apne stand se.
+
+Aaj mera sabse keemti tukda mere shareer ka chala gya.
+Saansein band ho rahi hain. Bata de kaise mai jiyunga tere bina?
+Khushi ki wajah bhi tum thi, rone ki wajah bhi tum bani. "I love you the most" bolke chhod diya. Bich sadak pe. Dono taraf kohra, kuch nazar nahi aa raha. Sirf woh dikh rahi hai. Pata nahi aisa lag raha hai ki agar woh khayi mein bhi lejaa rahi hai toh mai chalne ke liye taiyaar hoon. Ek baar hug karna chahta hoon.
+
+Akanksha agar hum ab bhi saath hain, aur agar na bhi hain, aur agar tum ye padh rahi ho jo mai kabhi bhi nahi chahunga kyunki mai tumhara dil nahi dukhana chahta... par please...
+Ek baar kaske mere paas aana aur mere sir ko seene se gale laga dena, toh mai saara jahaan bhool jaunga, aur waapas tumhare paas aa jaunga.`,
+    },
+    {
+      id: 5,
+      date: "October 2026",
+      tag: "No Title",
+      title: "The Unspoken Heartbreak",
+      excerpt:
+        "October is a month of getting or losing ur precious ones. 2023 mein mila tha... 26 mein shayad loss hai... Phone kholta hoon toh uski tasveer saamne aati hai...",
+      content: `No title...
+Umm... thik ho raha tha sabkuch? Aisa laga mujhe... insta notes ke zariye baat kar rahe the. Mere gaane ka reply usne apne gaane se diya kehkar ki "aa rahi hoon tere paas... nahi jaungi kabhi chhodke"... jo khush mai hua tha ki mai apne saare gham bhool jana chahta tha.
+Quiz tha mera, socha thoda padh lu, baune ka laptop liya... phir kya dekhta hoon, meri pyaari madamji ke msgs aaye the...
+Mere haath kaanp gaye bhai.
+
+"But i never forgave him?"
+Bhai par usne toh question mark bhi daala hai, tu itna kyu soch raha hai... kar diya hoga usne maaf... note kyu hi lagati par...
+I never forgave him... jhooth kyu bola mujhe? Kyu daala note? Ek 3rd person ko sach bolna was the one which broke me from the core. Muh pe mana kar deti ki nahi kara hai maaf, jhooth was the only option u got Akanksha???
+"I love you" ka bhi likha hua kahi aur jaake bolegi ki "i never loved him?"... Nahi of course not, ik u love me. Haan hoon pagal, nahi dikhti uske siwa koi aur.
+
+October is a month of getting or losing ur precious ones. 2023 mein mila tha... 26 mein shayad loss hai.
+Phone kholta hoon toh uski tasveer saamne aa jaati hai. Archive mein usko 4 baar dekh chuka hoon. Subah se 2 baar 3 saal ki saari memories dekh li. Ghutan ho rahi hai... par mar bhi nahi sakta. Agar koi "chali gyi" padhke idhar ye padhega toh bhai bichare ka bhi dil toot jayega... Humesha achi ending nahi milti bhai...`,
+    },
+    {
+      id: 6,
+      date: "Late October 2026",
+      tag: "….",
+      title: "Dekh Kitni Pyaari Lag Rahi Hai...",
+      excerpt:
+        "Story dekhi uski... dekh kitni pyaari lag rahi hai. Kitni cute hai yaar... Bas ye pray karunga ki use kabhi ye notes na dikhein...",
+      content: `....
+Story dekhi uski... dekh kitni pyaari lag rahi hai.
+Kitni cute hai yaar... kaun kaise hi jhagda kar sakta hai iske saath?
+
+Bas ye pray karunga ki use kabhi ye notes na dikhein... warna woh khudko dosh degi... aur rone lagegi... aur woh mujhse dekha nahi jayega.
+Kaash use kabhi pata hi na chale ki mai kis haalat mein hoon.
+Chhodke chali jayegi yaar...`,
     },
   ];
 
@@ -149,7 +274,7 @@ export default function ApologyWebsite() {
     if (!gsapLoaded || !window.gsap || !trailContainerRef.current) return;
     const gsap = window.gsap;
 
-    const trailCount = 8; // Optimal count for smooth 60-120fps performance
+    const trailCount = 8;
     const trailElements = [];
     trailContainerRef.current.innerHTML = "";
 
@@ -171,7 +296,6 @@ export default function ApologyWebsite() {
       trailElements.push(dot);
     }
 
-    // Use gsap.quickTo for instant GPU-accelerated updates without recreating tweens
     const quickSetters = trailElements.map((el, index) => ({
       x: gsap.quickTo(el, "x", { duration: 0.12 + index * 0.025, ease: "power2.out" }),
       y: gsap.quickTo(el, "y", { duration: 0.12 + index * 0.025, ease: "power2.out" }),
@@ -198,8 +322,8 @@ export default function ApologyWebsite() {
     };
   }, [gsapLoaded]);
 
-  // ================= 3. SMOOTH 3D PERSPECTIVE TILT (Ref: cursor-driven-perspective-tilt) =================
-  const handlePerspectiveTilt = useCallback((e, cardElement, maxRotation = 12) => {
+  // ================= 3. SMOOTH 3D PERSPECTIVE TILT =================
+  const handlePerspectiveTilt = useCallback((e, cardElement, maxRotation = 10) => {
     if (!cardElement || !window.gsap) return;
     const gsap = window.gsap;
     const rect = cardElement.getBoundingClientRect();
@@ -249,7 +373,7 @@ export default function ApologyWebsite() {
     }
   }, []);
 
-  // ================= 4. GSAP CONTEXT & REVERT MANAGEMENT =================
+  // ================= 4. GSAP CONTEXT & ANIMATIONS =================
   useEffect(() => {
     if (!gsapLoaded || !window.gsap) return;
     const gsap = window.gsap;
@@ -279,7 +403,7 @@ export default function ApologyWebsite() {
         });
       }
 
-      // 2. Optimized Falling Petals (18 petals with GPU transforms)
+      // 2. Falling Petals
       if (petalsContainerRef.current) {
         petalsContainerRef.current.innerHTML = "";
         const totalPetals = 18;
@@ -327,6 +451,23 @@ export default function ApologyWebsite() {
           );
         }
 
+        // Staggered Entrance for Diary Cards
+        const validDiary = diaryCardsRef.current.filter(Boolean);
+        if (validDiary.length > 0) {
+          gsap.fromTo(
+            validDiary,
+            { opacity: 0, y: 40 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.85,
+              stagger: 0.15,
+              ease: "power2.out",
+              delay: 0.5,
+            }
+          );
+        }
+
         // Staggered Entrance for Photos
         const validPhotos = photosRef.current.filter(Boolean);
         if (validPhotos.length > 0) {
@@ -339,13 +480,13 @@ export default function ApologyWebsite() {
               duration: 0.75,
               stagger: 0.14,
               ease: "back.out(1.1)",
-              delay: 0.6,
+              delay: 0.8,
             }
           );
         }
       }
 
-      // 4. MOTIONPATH WAYPOINTS (Ref: motionpath-waypoints)
+      // 4. MOTIONPATH WAYPOINTS
       if (
         activeView === "landing" &&
         window.MotionPathPlugin &&
@@ -432,7 +573,6 @@ export default function ApologyWebsite() {
       duration: 1.2,
       ease: "power2.inOut",
       onComplete: () => {
-        // Resume looping after 3 seconds
         setTimeout(() => {
           if (motionTweenRef.current) motionTweenRef.current.play();
         }, 3000);
@@ -458,7 +598,7 @@ export default function ApologyWebsite() {
         className="fixed inset-0 pointer-events-none z-10 overflow-hidden"
       />
 
-      {/* Optimized GSAP Cursor Trail Container (Ref: cursor-trail) */}
+      {/* Optimized GSAP Cursor Trail Container */}
       <div ref={trailContainerRef} className="fixed inset-0 pointer-events-none z-40" />
 
       {/* Audio Element with Local MP4 Song */}
@@ -512,7 +652,7 @@ export default function ApologyWebsite() {
       {/* ================= LANDING PAGE VIEW ================= */}
       {activeView === "landing" && (
         <main className="relative z-20 min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 text-center max-w-5xl mx-auto py-24 animate-in fade-in duration-500">
-          {/* Hero 3D Perspective Card (Ref: cursor-driven-perspective-tilt) */}
+          {/* Hero 3D Perspective Card */}
           <div
             ref={landingCardRef}
             onMouseMove={(e) => handlePerspectiveTilt(e, landingCardRef.current, 10)}
@@ -557,7 +697,7 @@ export default function ApologyWebsite() {
             </div>
           </div>
 
-          {/* ================= RESTRUCTURED MOTIONPATH WAYPOINTS (Zero Overlap) ================= */}
+          {/* Clean MotionPath Waypoints Section */}
           <section className="w-full max-w-4xl mt-14 p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-[#16062a]/70 to-[#0e031c]/80 border border-rose-500/25 backdrop-blur-md shadow-2xl">
             <div className="text-center mb-6">
               <span className="text-rose-400 text-xs font-semibold tracking-widest uppercase">
@@ -571,7 +711,6 @@ export default function ApologyWebsite() {
               </p>
             </div>
 
-            {/* Clean SVG Track Banner (No text collision) */}
             <div className="relative w-full h-20 sm:h-24 px-4 flex items-center justify-center overflow-visible">
               <svg viewBox="0 0 800 80" className="w-full h-full overflow-visible">
                 <defs>
@@ -582,7 +721,6 @@ export default function ApologyWebsite() {
                   </linearGradient>
                 </defs>
 
-                {/* Smooth flowing trajectory */}
                 <path
                   id="loveMotionPath"
                   d="M 30,40 C 180,-10 240,90 400,40 C 560,-10 620,90 770,40"
@@ -592,7 +730,6 @@ export default function ApologyWebsite() {
                   strokeDasharray="6 6"
                 />
 
-                {/* Guided Avatar */}
                 <g ref={motionPathDotRef} className="cursor-pointer select-none">
                   <circle r="14" fill="#f43f5e" filter="drop-shadow(0px 0px 8px #f43f5e)" />
                   <text
@@ -608,7 +745,6 @@ export default function ApologyWebsite() {
               </svg>
             </div>
 
-            {/* Dedicated Non-Overlapping Waypoint Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-4">
               {waypoints.map((wp, idx) => (
                 <button
@@ -637,13 +773,13 @@ export default function ApologyWebsite() {
             </div>
           </section>
 
-          {/* 3D Interactive Feature Teaser Cards (Ref: cursor-driven-perspective-tilt) */}
+          {/* 3D Feature Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mt-10 w-full max-w-4xl">
             {[
               {
-                icon: "🕊️",
-                title: "A Sincere Apology",
-                desc: "Every word written from deep inside, asking for your gentle grace and forgiveness.",
+                icon: "📖",
+                title: "What You Always Asked",
+                desc: "My private journal notes written across September & October 2026, revealed for you.",
               },
               {
                 icon: "📸",
@@ -709,7 +845,7 @@ export default function ApologyWebsite() {
             </p>
           </section>
 
-          {/* Hindi Quote Cards with 3D Perspective Tilt (Ref: cursor-driven-perspective-tilt) */}
+          {/* Section 1: Hindi Quote Cards */}
           <section className="w-full my-8">
             <div className="text-center mb-10">
               <span className="text-rose-400 text-xs sm:text-sm font-semibold tracking-widest uppercase">
@@ -741,12 +877,10 @@ export default function ApologyWebsite() {
                     &ldquo;
                   </div>
 
-                  {/* Hindi Quote (Exact Lines) */}
                   <h3 className="text-xl sm:text-2xl font-semibold text-rose-100 group-hover:text-rose-300 transition-colors duration-300 leading-snug mb-3 pr-6">
                     {quote.hindi}
                   </h3>
 
-                  {/* English Reflection */}
                   <p className="text-sm sm:text-base text-rose-200/70 leading-relaxed font-light">
                     {quote.english}
                   </p>
@@ -762,7 +896,67 @@ export default function ApologyWebsite() {
             </div>
           </section>
 
-          {/* Responsive Photo Grid with 3D Tilt */}
+          {/* Section 2: "What You Always Asked Me" (Chronological Diary Notes) */}
+          <section className="w-full my-12">
+            <div className="text-center mb-10">
+              <span className="text-rose-400 text-xs sm:text-sm font-semibold tracking-widest uppercase">
+                Chronological Personal Diary • September & October 2026
+              </span>
+              <h2 className="text-2xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-rose-100 via-rose-200 to-pink-300 mt-1 mb-2">
+                What You Always Asked Me
+              </h2>
+              <p className="text-rose-300/80 text-sm sm:text-base max-w-2xl mx-auto px-4 font-light">
+                Aap humesha kehti thi ki aapke liye kuch kyu nahi banata, ya main kya chhupa raha hoon.
+                These are the unvarnished notes I wrote in silent solitude on my darkest nights, ordered by the date they were written.
+              </p>
+              <div className="h-0.5 w-32 bg-gradient-to-r from-transparent via-rose-500 to-transparent mx-auto mt-4" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {diaryNotes.map((note, index) => (
+                <div
+                  key={note.id}
+                  ref={(el) => (diaryCardsRef.current[index] = el)}
+                  onMouseMove={(e) => handlePerspectiveTilt(e, e.currentTarget, 10)}
+                  onMouseLeave={(e) => handleTiltReset(e.currentTarget)}
+                  style={{ transformStyle: "preserve-3d" }}
+                  className="relative group p-6 sm:p-7 rounded-2xl bg-gradient-to-b from-[#17072d]/85 via-[#100322]/90 to-[#0a0216]/95 border border-rose-500/25 hover:border-rose-400/60 shadow-[0_10px_28px_rgba(0,0,0,0.5)] hover:shadow-[0_0_35px_rgba(244,63,94,0.3)] backdrop-blur-md transition-shadow duration-300 flex flex-col justify-between overflow-hidden cursor-default"
+                >
+                  <div className="card-gloss absolute -inset-full bg-gradient-to-r from-transparent via-rose-400/10 to-transparent pointer-events-none opacity-0" />
+
+                  <div>
+                    {/* Date Badge */}
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-950/70 border border-rose-500/30 text-rose-300 text-xs font-semibold tracking-wide">
+                        <span>🗓️</span> {note.date}
+                      </span>
+                      <span className="text-[11px] text-rose-400/60 font-mono">
+                        {note.tag}
+                      </span>
+                    </div>
+
+                    <h3 className="text-lg sm:text-xl font-bold text-rose-100 group-hover:text-rose-300 transition-colors duration-300 mb-2.5">
+                      {note.title}
+                    </h3>
+
+                    <p className="text-xs sm:text-sm text-rose-200/70 leading-relaxed font-light italic mb-5 line-clamp-4">
+                      &ldquo;{note.excerpt}&rdquo;
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={() => setSelectedNote(note)}
+                    className="w-full mt-2 py-2.5 px-4 rounded-xl bg-rose-950/50 hover:bg-rose-600/80 border border-rose-500/30 hover:border-rose-400 text-rose-200 hover:text-white text-xs font-semibold tracking-wide transition-all duration-300 flex items-center justify-center gap-2 group-hover:shadow-[0_0_20px_rgba(244,63,94,0.4)]"
+                  >
+                    <span>Read Full Note</span>
+                    <span className="text-sm">📖</span>
+                  </button>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Section 3: Responsive Photo Grid with 3D Tilt */}
           <section className="w-full my-12">
             <div className="text-center mb-10">
               <span className="text-rose-400 text-xs sm:text-sm font-semibold tracking-widest uppercase">
@@ -809,7 +1003,7 @@ export default function ApologyWebsite() {
             </div>
           </section>
 
-          {/* Sincere Letter Section in English */}
+          {/* Section 4: Sincere Letter in English */}
           <section className="w-full max-w-2xl my-8 p-8 sm:p-10 rounded-3xl bg-gradient-to-b from-[#18092d]/80 to-[#100420]/90 border border-rose-500/30 shadow-[0_0_40px_rgba(244,63,94,0.15)] text-center relative overflow-hidden backdrop-blur-md">
             <div className="absolute -top-12 -right-12 w-32 h-32 bg-rose-500/10 rounded-full blur-2xl pointer-events-none" />
 
@@ -826,7 +1020,7 @@ export default function ApologyWebsite() {
             </p>
           </section>
 
-          {/* Closing & Call to Action Section */}
+          {/* Section 5: Closing & Call to Action */}
           <section className="text-center w-full max-w-xl mt-10 flex flex-col items-center">
             <p className="text-rose-300/80 text-sm tracking-widest uppercase font-semibold mb-2">
               Waiting for you with all my heart
@@ -848,6 +1042,47 @@ export default function ApologyWebsite() {
             </button>
           </section>
         </main>
+      )}
+
+      {/* ================= FULL DIARY NOTE MODAL ================= */}
+      {selectedNote && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-300">
+          <div className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto p-7 sm:p-9 rounded-3xl bg-gradient-to-b from-[#1b0833] via-[#120424] to-[#0a0216] border border-rose-500/40 shadow-[0_0_60px_rgba(244,63,94,0.45)] text-left">
+            <div className="flex items-center justify-between pb-4 border-b border-rose-500/20 mb-5">
+              <div>
+                <span className="text-xs text-rose-400 font-mono tracking-widest uppercase block mb-1">
+                  🗓️ Published: {selectedNote.date}
+                </span>
+                <h3 className="text-xl sm:text-2xl font-bold text-rose-100">
+                  {selectedNote.title}
+                </h3>
+              </div>
+              <button
+                onClick={() => setSelectedNote(null)}
+                className="w-9 h-9 rounded-full bg-rose-950/70 border border-rose-500/30 text-rose-300 hover:text-white hover:bg-rose-600 flex items-center justify-center text-lg transition-all"
+                aria-label="Close Note"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="text-rose-200/90 text-sm sm:text-base leading-relaxed font-light whitespace-pre-line space-y-4 pr-1">
+              {selectedNote.content}
+            </div>
+
+            <div className="mt-8 pt-4 border-t border-rose-500/20 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <span className="text-xs text-rose-400/60 font-serif italic">
+                From Krish's private notepad • Written for Akanksha
+              </span>
+              <button
+                onClick={() => setSelectedNote(null)}
+                className="px-6 py-2 rounded-full bg-rose-600 hover:bg-rose-500 text-white font-medium text-xs sm:text-sm transition-all shadow-md active:scale-95"
+              >
+                Close Note 🌹
+              </button>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Heartfelt Confirmation Modal */}
